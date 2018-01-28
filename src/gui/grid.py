@@ -8,13 +8,11 @@ class Grid(Canvas):
     # Draw grid
     def draw_grid(self, e):
         self.update()
-        count_cols = self.winfo_width() // gc.Cell.WIDTH + 1
-        count_lines = self.winfo_height() // gc.Cell.WIDTH + 1
 
-        for i in range(count_lines):
-            self.create_line(0, gc.Cell.WIDTH * i, self.winfo_width(), gc.Cell.WIDTH * i)
-        for j in range(count_cols):
-            self.create_line(gc.Cell.WIDTH * j, 0, gc.Cell.WIDTH * j, self.winfo_height())
+        for i in range(0, self.winfo_width(), gc.Cell.WIDTH):
+            self.create_line(0, i, self.winfo_width(), i)
+        for j in range(0, self.winfo_height(), gc.Cell.WIDTH):
+            self.create_line(j, 0,  j, self.winfo_height())
 
     # Bind events
     def bind_events(self):
