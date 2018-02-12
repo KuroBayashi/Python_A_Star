@@ -1,23 +1,17 @@
 from tkinter import Tk, Frame, Y, RIGHT
 
 import gui.grid as gg
+import gui.options as go
 
 
 class Gui(Tk):
 
     MIN_WIDTH = 810
     MIN_HEIGHT = 600
-    OPTIONS_WIDTH = 250
-
-    # Build options panel
-    def draw_options(self):
-        self._options.configure(width=Gui.OPTIONS_WIDTH)
-        self._options.configure(background="#3f4d59")
-        self._options.pack(fill=Y, side=RIGHT)
 
     # Build main window
     def init_window(self):
-        self.title("Python - A* algorithm (Test)")
+        self.title("Python - Pathfinding algorithms")
         self.geometry("%dx%d+%d+%d" % (
             Gui.MIN_WIDTH,
             Gui.MIN_HEIGHT,
@@ -37,7 +31,5 @@ class Gui(Tk):
         super().__init__()
         self.init_window()
 
-        self._options = Frame(self)
-        self.draw_options()
-
-        self._grid = gg.Grid(self)
+        self.m_options = go.Options(self)
+        self.m_grid = gg.Grid(self)
