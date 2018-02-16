@@ -5,7 +5,8 @@ from algorithms.a_star.heuristic import Heuristic
 class AStar:
 
     # Get list of nodes to build path
-    def get_path(self, node):
+    @staticmethod
+    def get_path(node):
         path = []
 
         while node.parent is not None:

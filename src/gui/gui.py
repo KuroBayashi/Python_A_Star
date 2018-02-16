@@ -1,7 +1,7 @@
-from tkinter import Tk, Frame, Y, RIGHT
+from tkinter import Tk
 
 import gui.grid as gg
-import gui.options as go
+import gui.menu as gm
 
 
 class Gui(Tk):
@@ -31,5 +31,5 @@ class Gui(Tk):
         super().__init__()
         self.init_window()
 
-        self.m_options = go.Options(self)
+        self.m_options = gm.Menu(self)
         self.m_grid = gg.Grid(self)
