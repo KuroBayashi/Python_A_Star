@@ -31,5 +31,5 @@ class Gui(Tk):
         super().__init__()
         self.init_window()
 
-        self.m_options = gm.Menu(self)
+        self.m_menu = gm.Menu(self)
         self.m_grid = gg.Grid(self)

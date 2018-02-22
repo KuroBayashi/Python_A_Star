@@ -1,4 +1,4 @@
 .idea/
 .git/
 venv/
-src/gui/__pycache__/
+src/**/__pycache__/

@@ -35,6 +35,9 @@ class GridEventManager:
 
     # On mouse move
     def on_mouse_move(self, event):
+        if event.x >= event.widget.winfo_width() or event.y >= event.widget.winfo_height():
+            return
+
         x, y = event.x // gc.Cell.WIDTH, event.y // gc.Cell.WIDTH
         type_id = self.m_grid.m_cells[y][x].m_type["id"]
 
@@ -101,13 +104,12 @@ class GridEventManager:
 
     # On mouse out
     def on_mouse_out(self, event):
-        if self.m_preview_id is None:
-            event.x = 0 if event.x <= 0 \
-                else event.widget.winfo_width() - 1 if event.x >= event.widget.winfo_width() \
-                else event.x
-            event.y = 0 if event.y <= 0 \
-                else event.widget.winfo_height() - 1 if event.y >= event.widget.winfo_height() \
-                else event.y
+        event.x = 0 if event.x <= 0 \
+            else event.widget.winfo_width() - 1 if event.x >= event.widget.winfo_width() \
+            else event.x
+        event.y = 0 if event.y <= 0 \
+            else event.widget.winfo_height() - 1 if event.y >= event.widget.winfo_height() \
+            else event.y
 
         self.on_mouse_up(event)
 

@@ -74,7 +74,7 @@ class Menu(Frame):
 
         # Checkbox
         opt_list = []
-        opt_list_def = [("Allow diagonal", "1")]
+        opt_list_def = [("Autoriser les diagonales", "1")]
         x = IntVar(value=13)
 
         for text, value in opt_list_def:
@@ -115,3 +115,7 @@ class Menu(Frame):
         self.m_start_button = self.build_start_button()
 
         self.m_event_manager = MenuEventManager(self)
+
+        #self.m_selected_algorithm = self.m_algorithms_list[0]
+        #self.m_selected_heuristic = self.m_heuristics_list[0]
+        #self.m_selected_diagonal = False

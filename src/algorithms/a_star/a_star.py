@@ -1,3 +1,5 @@
+from heapq import heappop, heappush
+
 from algorithms.a_star.exception_path_not_found import ExceptionPathNotFound
 from algorithms.a_star.heuristic import Heuristic
 
@@ -16,37 +18,36 @@ class AStar:
         return path
 
     # Get list of neighbors of the node
-    def get_neightbors(self, node):
-        x, y = node.x, node.y
-
-        coords = [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]
-        if self.m_diagonal_allowed:
-            coords += [(x-1, y-1), (x+1, y-1), (x-1, y+1), (x+1, y+1)]
-
-        return [
-            self.m_grid[t[0]][t[1]] for t in coords
-            if 0 <= t[0] < len(self.m_grid[0]) and 0 <= t[1] < len(self.m_grid)
-        ]
+    # def get_neighbors(self, node):
+    #     x, y = node.x, node.y
+    #
+    #     coords = [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]
+    #     if self.m_diagonal_allowed:
+    #         coords += [(x-1, y-1), (x+1, y-1), (x-1, y+1), (x+1, y+1)]
+    #
+    #     return [
+    #         self.m_grid[t[0]][t[1]] for t in coords
+    #         if 0 <= t[0] < len(self.m_grid[0]) and 0 <= t[1] < len(self.m_grid)
+    #     ]
 
     # Run the solver
     def run(self, start, end):
-        open_set = []
         closed_set = []
+        open_set = []
 
         current = start
-        open_set.append(current)
+        heappush(open_set, current)
 
         try:
-            while len(open_set):
-                current = open_set.pop(0)
+            while open_set:
+                current = heappop(open_set)
 
                 if current == end:
                     return self.get_path(current)
 
-                open_set.remove(current)
                 closed_set.append(current)
 
-                for node in self.get_neightbors(current):
+                for node in current.m_neighbors:
                     if node in closed_set:
                         continue
 
@@ -57,15 +58,15 @@ class AStar:
                             node.set_parent(current)
                     else:
                         node.set_parent(current)
-                        node.set_cost_h(self.heuristic(node, end))
-                        open_set.append(node)
+                        node.set_cost_h(self.m_heuristic(node, end))
+                        heappush(open_set, node)
 
             raise ExceptionPathNotFound()
         except ExceptionPathNotFound as e:
             print("Exception : ", e.m_message)
 
     # Constructor
-    def __init__(self, grid, heuristic=Heuristic.manhattan, diagonal_allowed=True):
+    def __init__(self, grid, heuristic=Heuristic.manhattan, diagonal_allowed=False):
         self.m_grid = grid
-        self.heuristic = heuristic
+        self.m_heuristic = heuristic
         self.m_diagonal_allowed = diagonal_allowed
