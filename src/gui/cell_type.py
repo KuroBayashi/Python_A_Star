@@ -6,5 +6,3 @@ class CellType:
     TESTED = {"id": 4, "traversable": True, "color": "#92decf"}       # Light blue
     ON_QUEUE = {"id": 5, "traversable": True, "color": "#a4dd93"}     # Light green
     VALIDATE = {"id": 6, "traversable": True, "color": "#e29ce1"}     # Light purple
-
-# Look for "Named tuples"

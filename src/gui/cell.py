@@ -24,4 +24,3 @@ class Cell(Node):
             Cell.WIDTH * (y + 1),
             fill=self.m_type["color"]
         )
-

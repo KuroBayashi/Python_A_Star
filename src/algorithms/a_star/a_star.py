@@ -63,9 +63,9 @@ class AStar:
         print(coords)
         return [
             self.m_grid.m_cells[t[1]][t[0]] for t in coords
-            if 0 <= t[0] < len(self.m_grid.m_cells[0]) \
-               and 0 <= t[1] < len(self.m_grid.m_cells) \
-               and self.m_grid.m_cells[t[1]][t[0]].m_traversable
+            if 0 <= t[0] < len(self.m_grid.m_cells[0])
+                and 0 <= t[1] < len(self.m_grid.m_cells)
+                and self.m_grid.m_cells[t[1]][t[0]].m_traversable
         ]
 
     # Get list of nodes to build path
@@ -86,4 +86,3 @@ class AStar:
     @staticmethod
     def distance(a, b):
         return 1
-

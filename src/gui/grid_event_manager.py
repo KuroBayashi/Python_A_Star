@@ -1,4 +1,4 @@
-import gui.cell as gc
+import gui.cell as gcc
 import gui.cell_type as gct
 
 
@@ -16,7 +16,7 @@ class GridEventManager:
 
     # On mouse down
     def on_mouse_down(self, event):
-        x, y = event.x // gc.Cell.WIDTH, event.y // gc.Cell.WIDTH
+        x, y = event.x // gcc.Cell.WIDTH, event.y // gcc.Cell.WIDTH
         type_id = self.m_grid.m_cells[y][x].m_type["id"]
 
         # voir dico pour remplaer switch
@@ -39,7 +39,7 @@ class GridEventManager:
         if event.x >= event.widget.winfo_width() or event.y >= event.widget.winfo_height():
             return
 
-        x, y = event.x // gc.Cell.WIDTH, event.y // gc.Cell.WIDTH
+        x, y = event.x // gcc.Cell.WIDTH, event.y // gcc.Cell.WIDTH
         type_id = self.m_grid.m_cells[y][x].m_type["id"]
 
         if self.m_editor_type == GridEventManager.MOVE_START:
@@ -48,10 +48,10 @@ class GridEventManager:
             else:
                 self.delete_preview()
                 self.m_preview_id = self.m_grid.create_rectangle(
-                    gc.Cell.WIDTH * x,
-                    gc.Cell.WIDTH * y,
-                    gc.Cell.WIDTH * (x + 1),
-                    gc.Cell.WIDTH * (y + 1),
+                    gcc.Cell.WIDTH * x,
+                    gcc.Cell.WIDTH * y,
+                    gcc.Cell.WIDTH * (x + 1),
+                    gcc.Cell.WIDTH * (y + 1),
                     fill=gct.CellType.START["color"]
                 )
         elif self.m_editor_type == GridEventManager.MOVE_END:
@@ -60,10 +60,10 @@ class GridEventManager:
             else:
                 self.delete_preview()
                 self.m_preview_id = self.m_grid.create_rectangle(
-                    gc.Cell.WIDTH * x,
-                    gc.Cell.WIDTH * y,
-                    gc.Cell.WIDTH * (x + 1),
-                    gc.Cell.WIDTH * (y + 1),
+                    gcc.Cell.WIDTH * x,
+                    gcc.Cell.WIDTH * y,
+                    gcc.Cell.WIDTH * (x + 1),
+                    gcc.Cell.WIDTH * (y + 1),
                     fill=gct.CellType.END["color"]
                 )
         elif self.m_editor_type == GridEventManager.WALL_ADD:
@@ -78,13 +78,13 @@ class GridEventManager:
         if self.m_editor_type is None:
             return
 
-        x, y = event.x // gc.Cell.WIDTH, event.y // gc.Cell.WIDTH
+        x, y = event.x // gcc.Cell.WIDTH, event.y // gcc.Cell.WIDTH
         type_id = self.m_grid.m_cells[y][x].m_type["id"]
 
         if self.m_editor_type in [GridEventManager.MOVE_START, GridEventManager.MOVE_END]:
             if self.m_preview_id is not None:
                 preview_bbox = self.m_grid.coords(self.m_preview_id)
-                x, y = int(preview_bbox[0] // gc.Cell.WIDTH), int(preview_bbox[1] // gc.Cell.WIDTH)
+                x, y = int(preview_bbox[0] // gcc.Cell.WIDTH), int(preview_bbox[1] // gcc.Cell.WIDTH)
 
             if self.m_editor_type == GridEventManager.MOVE_START:
                 self.m_grid.m_cells[y][x].set_type(gct.CellType.START)

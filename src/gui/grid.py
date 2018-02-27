@@ -1,6 +1,6 @@
 from tkinter import Canvas, BOTH
 
-import gui.cell as gc
+import gui.cell as gcc
 import gui.cell_type as gct
 from gui.grid_event_manager import GridEventManager
 
@@ -28,16 +28,16 @@ class Grid(Canvas):
     def draw_lines(self):
         self.update()
 
-        for i in range(0, self.winfo_width(), gc.Cell.WIDTH):
+        for i in range(0, self.winfo_width(), gcc.Cell.WIDTH):
             self.create_line(0, i, self.winfo_width(), i)
-        for j in range(0, self.winfo_height(), gc.Cell.WIDTH):
+        for j in range(0, self.winfo_height(), gcc.Cell.WIDTH):
             self.create_line(j, 0,  j, self.winfo_height())
 
     # Build cells
     def build_cells(self):
         self.m_cells = [
-            [gc.Cell(self, x, y) for x in range(self.winfo_width() // gc.Cell.WIDTH)]
-            for y in range(self.winfo_height() // gc.Cell.WIDTH)
+            [gcc.Cell(self, x, y) for x in range(self.winfo_width() // gcc.Cell.WIDTH)]
+            for y in range(self.winfo_height() // gcc.Cell.WIDTH)
         ]
         self.m_cells[1][1].set_type(gct.CellType.START)
         self.m_cells[len(self.m_cells) - 2][len(self.m_cells[0]) - 2].set_type(gct.CellType.END)
