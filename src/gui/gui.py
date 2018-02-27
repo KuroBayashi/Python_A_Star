@@ -6,25 +6,8 @@ import gui.menu as gm
 
 class Gui(Tk):
 
-    MIN_WIDTH = 810
-    MIN_HEIGHT = 600
-
-    # Build main window
-    def init_window(self):
-        self.title("Python - Pathfinding algorithms")
-        self.geometry("%dx%d+%d+%d" % (
-            Gui.MIN_WIDTH,
-            Gui.MIN_HEIGHT,
-            (self.winfo_screenwidth() - Gui.MIN_WIDTH) // 2,
-            (self.winfo_screenheight() - Gui.MIN_HEIGHT) // 2)
-        )
-        self.update()
-        self.minsize(self.winfo_width(), self.winfo_height())
-        self.resizable(False, False)
-
-    # Show GUI
-    def show(self):
-        self.mainloop()
+    WIDTH = 810
+    HEIGHT = 520
 
     # Constructor
     def __init__(self):
@@ -33,3 +16,20 @@ class Gui(Tk):
 
         self.m_menu = gm.Menu(self)
         self.m_grid = gg.Grid(self)
+
+    # Build main window
+    def init_window(self):
+        self.title("Python - Pathfinding algorithms")
+        self.geometry("%dx%d+%d+%d" % (
+            Gui.WIDTH,
+            Gui.HEIGHT,
+            (self.winfo_screenwidth() - Gui.WIDTH) // 2,
+            (self.winfo_screenheight() - Gui.HEIGHT) // 2)
+        )
+        self.update()
+        self.minsize(self.winfo_width(), self.winfo_height())
+        self.resizable(False, False)
+
+    # Show GUI
+    def show(self):
+        self.mainloop()

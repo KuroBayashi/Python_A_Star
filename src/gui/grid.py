@@ -7,6 +7,23 @@ from gui.grid_event_manager import GridEventManager
 
 class Grid(Canvas):
 
+    # Constructor
+    def __init__(self, root):
+        super().__init__(root)
+        self.setup_canvas()
+
+        self.m_cells = []
+        self.m_event_manager = GridEventManager(self)
+
+        self.build_cells()
+        self.draw_lines()
+
+    # Setup canvas
+    def setup_canvas(self):
+        self.configure(background="#f1f1f1", highlightthickness=0)
+        self.pack(expand=True, fill=BOTH)
+        self.update()
+
     # Draw lines
     def draw_lines(self):
         self.update()
@@ -25,19 +42,8 @@ class Grid(Canvas):
         self.m_cells[1][1].set_type(gct.CellType.START)
         self.m_cells[len(self.m_cells) - 2][len(self.m_cells[0]) - 2].set_type(gct.CellType.END)
 
-    # Setup canvas
-    def setup_canvas(self):
-        self.configure(background="#f1f1f1", highlightthickness=0)
-        self.pack(expand=True, fill=BOTH)
-        self.update()
+    def reset(self):
+        history = self.find_withtag("history")
 
-    # Constructor
-    def __init__(self, root):
-        super().__init__(root)
-        self.setup_canvas()
-
-        self.m_cells = []
-        self.m_event_manager = GridEventManager(self)
-
-        self.build_cells()
-        self.draw_lines()
+        for item in history:
+            self.delete(item)

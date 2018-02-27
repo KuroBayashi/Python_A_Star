@@ -19,6 +19,7 @@ class GridEventManager:
         x, y = event.x // gc.Cell.WIDTH, event.y // gc.Cell.WIDTH
         type_id = self.m_grid.m_cells[y][x].m_type["id"]
 
+        # voir dico pour remplaer switch
         if type_id == gct.CellType.START["id"]:
             self.m_editor_type = GridEventManager.MOVE_START
             self.m_grid.m_cells[y][x].set_type(gct.CellType.EMPTY)

@@ -7,15 +7,16 @@ class Cell(Node):
     WIDTH = 40
 
     # Setter
-    def set_type(self, ctype):
-        self.m_type = ctype
-        self.m_canvas.itemconfig(self.m_shape, fill=self.m_type["color"])
+    def set_type(self, cell_type):
+        self.m_type = cell_type
+        self.m_traversable = cell_type["traversable"]
+        self.m_canvas.itemconfig(self.m_shape, fill=cell_type["color"])
 
     # Constructor
-    def __init__(self, canvas, x, y, ctype=gct.CellType.EMPTY):
+    def __init__(self, canvas, x, y, cell_type=gct.CellType.EMPTY):
         super().__init__(x, y)
-        self.m_type = ctype
         self.m_canvas = canvas
+        self.m_type = cell_type
         self.m_shape = canvas.create_rectangle(
             Cell.WIDTH * x,
             Cell.WIDTH * y,
@@ -23,3 +24,4 @@ class Cell(Node):
             Cell.WIDTH * (y + 1),
             fill=self.m_type["color"]
         )
+
