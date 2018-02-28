@@ -6,8 +6,8 @@ import gui.menu as gm
 
 class Gui(Tk):
 
-    WIDTH = 810
-    HEIGHT = 520
+    WIDTH = 861
+    HEIGHT = 511
 
     # Constructor
     def __init__(self):

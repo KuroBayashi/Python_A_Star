@@ -5,7 +5,7 @@ from history.action_type import ActionType
 
 class HistoryInterpreter:
 
-    ANIM_SPEED = 100
+    ANIM_SPEED = 10
 
     # Constructor
     def __init__(self, history, grid):

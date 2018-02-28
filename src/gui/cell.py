@@ -4,7 +4,7 @@ from algorithms.a_star.node import Node
 
 class Cell(Node):
 
-    WIDTH = 40
+    WIDTH = 20
 
     # Setter
     def set_type(self, cell_type):

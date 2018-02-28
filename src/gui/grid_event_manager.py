@@ -16,10 +16,13 @@ class GridEventManager:
 
     # On mouse down
     def on_mouse_down(self, event):
+        if event.x >= event.widget.winfo_width()-1 or event.y >= event.widget.winfo_height()-1:
+            return
+
         x, y = event.x // gcc.Cell.WIDTH, event.y // gcc.Cell.WIDTH
         type_id = self.m_grid.m_cells[y][x].m_type["id"]
 
-        # voir dico pour remplaer switch
+        # voir dico pour remplacer switch
         if type_id == gct.CellType.START["id"]:
             self.m_editor_type = GridEventManager.MOVE_START
             self.m_grid.m_cells[y][x].set_type(gct.CellType.EMPTY)
@@ -36,7 +39,8 @@ class GridEventManager:
 
     # On mouse move
     def on_mouse_move(self, event):
-        if event.x >= event.widget.winfo_width() or event.y >= event.widget.winfo_height():
+        if event.x <= 0 or event.x >= event.widget.winfo_width()-1 \
+                or event.y <= 0 or event.y >= event.widget.winfo_height()-1:
             return
 
         x, y = event.x // gcc.Cell.WIDTH, event.y // gcc.Cell.WIDTH
@@ -75,7 +79,9 @@ class GridEventManager:
 
     # On mouse up
     def on_mouse_up(self, event):
-        if self.m_editor_type is None:
+        if self.m_editor_type is None \
+                or event.x <= 0 or event.x >= event.widget.winfo_width()-1 \
+                or event.y <= 0 or event.y >= event.widget.winfo_height()-1:
             return
 
         x, y = event.x // gcc.Cell.WIDTH, event.y // gcc.Cell.WIDTH

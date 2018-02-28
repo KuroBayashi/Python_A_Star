@@ -21,7 +21,7 @@ class Grid(Canvas):
     # Setup canvas
     def setup_canvas(self):
         self.configure(background="#f1f1f1", highlightthickness=0)
-        self.pack(expand=True, fill=BOTH)
+        self.pack(expand=True, fill=BOTH, padx=5, pady=5)
         self.update()
 
     # Draw lines
@@ -42,8 +42,21 @@ class Grid(Canvas):
         self.m_cells[1][1].set_type(gct.CellType.START)
         self.m_cells[len(self.m_cells) - 2][len(self.m_cells[0]) - 2].set_type(gct.CellType.END)
 
-    def reset(self):
+    def clear(self):
+        for y in range(len(self.master.m_grid.m_cells)):
+            for x in range(len(self.master.m_grid.m_cells[0])):
+                self.m_cells[y][x].reset()
+
         history = self.find_withtag("history")
 
         for item in history:
             self.delete(item)
+
+    def reset(self):
+        for y in range(len(self.master.m_grid.m_cells)):
+            for x in range(len(self.master.m_grid.m_cells[0])):
+                self.m_cells[y][x].reset()
+
+                if self.m_cells[y][x].m_type == gct.CellType.WALL:
+                    self.m_cells[y][x].set_type(gct.CellType.EMPTY)
+

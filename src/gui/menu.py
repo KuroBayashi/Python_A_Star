@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Y, RIGHT, E, W, font, Radiobutton, IntVar, Checkbutton, Button
+from tkinter import Frame, Label, Y, RIGHT, E, W, S, font, Radiobutton, IntVar, Checkbutton, Button
 
 from algorithms.a_star.a_star import AStar
 from algorithms.a_star.exception_path_not_found import ExceptionPathNotFound
@@ -30,6 +30,7 @@ class Menu(Frame):
         self.m_options_label, self.m_options_list = self.build_options_list()
         self.m_start_button = self.build_start_button()
         self.m_reset_button = self.build_reset_button()
+        self.m_clear_button = self.build_clear_button()
 
         self.m_event_manager = MenuEventManager(self)
 
@@ -116,25 +117,36 @@ class Menu(Frame):
         btn = Button(self, text="START", command=self.on_click_start)
         btn.configure(font=font.Font(family=Menu.FONT_MAIN, size=12, weight="bold"))
         btn.configure(background=Menu.COLOR_FG, foreground=Menu.COLOR_BG)
-        btn.configure(cursor="hand2")
-        btn.grid(sticky=W+E, padx=40, pady=10)
+        btn.configure(cursor="hand2", width=20)
+        # btn.grid(sticky=W+E, padx=40, pady=10)
+        btn.place(x=20, y=410)
 
         return btn
 
     def build_reset_button(self):
         # Button
-        btn = Button(self, text="RESET", command=self.on_click_reset)
-        btn.configure(font=font.Font(family=Menu.FONT_MAIN, size=12, weight="bold"))
+        btn = Button(self, text="Reset", command=self.on_click_reset)
+        btn.configure(font=font.Font(family=Menu.FONT_MAIN, size=8))
         btn.configure(background=Menu.COLOR_FG, foreground=Menu.COLOR_BG)
-        btn.configure(cursor="hand2")
-        btn.grid(sticky=W + E, padx=40, pady=0)
+        btn.configure(cursor="hand2", width=15)
+        btn.place(x=20, y=470)
+
+        return btn
+
+    def build_clear_button(self):
+        # Button
+        btn = Button(self, text="Clear Path", command=self.on_click_clear)
+        btn.configure(font=font.Font(family=Menu.FONT_MAIN, size=8))
+        btn.configure(background=Menu.COLOR_FG, foreground=Menu.COLOR_BG)
+        btn.configure(cursor="hand2", width=15)
+        btn.place(anchor="ne", x=230, y=470)
 
         return btn
 
     # On click Start Button
     def on_click_start(self):
         # Reset
-        self.on_click_reset()
+        self.on_click_clear()
 
         # Heuristic
         heuristics = [Heuristic.manhattan, Heuristic.chebyshev, Heuristic.euclidean, Heuristic.octile]
@@ -176,10 +188,11 @@ class Menu(Frame):
 
             history_interpreter.run()
 
+    # On click Clear Button
+    def on_click_clear(self):
+        self.master.m_grid.clear()
+
     # On click Reset Button
     def on_click_reset(self):
-        for y in range(len(self.master.m_grid.m_cells)):
-            for x in range(len(self.master.m_grid.m_cells[0])):
-                self.master.m_grid.m_cells[y][x].reset()
-
+        self.on_click_clear()
         self.master.m_grid.reset()
