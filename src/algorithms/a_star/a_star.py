@@ -1,4 +1,5 @@
 from heapq import heappop, heappush
+from math import sqrt
 
 from algorithms.a_star.exception_path_not_found import ExceptionPathNotFound
 from algorithms.a_star.heuristic import Heuristic
@@ -22,17 +23,19 @@ class AStar:
         current = start
         current.set_cost_h(self.m_heuristic(start, end))
         heappush(open_set, current)
-        self.m_history.add(ActionType.ADD_TO_OPEN_SET, current)
 
         while open_set:
             current = heappop(open_set)
+            self.m_history.add(ActionType.SET_CURRENT, current)
 
             if id(current) == id(end):
                 return self.path(start, current)
 
             closed_set.append(current)
-            self.m_history.add(ActionType.ADD_TO_CLOSED_SET, current)
+            if id(current) != id(start):
+                self.m_history.add(ActionType.ADD_TO_CLOSED_SET, current)
 
+            self.m_history.add(ActionType.SET_CURRENT, current)
             for node in self.neighbors(current):
                 if node in closed_set:
                     continue
@@ -60,7 +63,6 @@ class AStar:
         if self.m_diagonal_allowed:
             coords += [(x - 1, y - 1), (x + 1, y - 1), (x - 1, y + 1), (x + 1, y + 1)]
 
-        print(coords)
         return [
             self.m_grid.m_cells[t[1]][t[0]] for t in coords
             if 0 <= t[0] < len(self.m_grid.m_cells[0])
@@ -85,4 +87,7 @@ class AStar:
     # Get "distance" (cost g) between 2 nodes
     @staticmethod
     def distance(a, b):
-        return 1
+        if a.m_x == b.m_x or a.m_y == b.m_y:
+            return 1
+        else:
+            return sqrt(2)

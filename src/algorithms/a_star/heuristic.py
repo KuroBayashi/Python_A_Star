@@ -1,4 +1,6 @@
 from math import sqrt
+import sys
+
 
 
 class Heuristic:
@@ -30,3 +32,7 @@ class Heuristic:
         dy = abs(node.m_y - target.m_y)
 
         return sqrt(dx * dx + dy * dy)
+
+    @staticmethod
+    def dijkstra(node, target):
+        return sys.maxsize

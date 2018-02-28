@@ -147,27 +147,34 @@ class Menu(Frame):
         history = History()
         history_interpreter = HistoryInterpreter(history, self.master.m_grid)
 
+        # Start / End nodes
+        start = None
+        end = None
+
+        for y in range(len(self.master.m_grid.m_cells)):
+            for x in range(len(self.master.m_grid.m_cells[0])):
+                if self.master.m_grid.m_cells[y][x].m_type == CellType.START:
+                    start = self.master.m_grid.m_cells[y][x]
+                elif self.master.m_grid.m_cells[y][x].m_type == CellType.END:
+                    end = self.master.m_grid.m_cells[y][x]
+
         # Algorithm
         if self.m_algorithms_list.get() == 1:
             try:
-                start = None
-                end = None
                 a_star = AStar(self.master.m_grid, history, heuristic, options[0])
-
-                for y in range(len(self.master.m_grid.m_cells)):
-                    for x in range(len(self.master.m_grid.m_cells[0])):
-                        if self.master.m_grid.m_cells[y][x].m_type == CellType.START:
-                            start = self.master.m_grid.m_cells[y][x]
-                        elif self.master.m_grid.m_cells[y][x].m_type == CellType.END:
-                            end = self.master.m_grid.m_cells[y][x]
-
                 a_star.run(start, end)
             except ExceptionPathNotFound as e:
                 print("A* : ", e.m_message)
 
             history_interpreter.run()
         else:
-            print("Dijkstra selected")
+            try:
+                a_star = AStar(self.master.m_grid, history, Heuristic.dijkstra, options[0])
+                a_star.run(start, end)
+            except ExceptionPathNotFound as e:
+                print("A* : ", e.m_message)
+
+            history_interpreter.run()
 
     # On click Reset Button
     def on_click_reset(self):

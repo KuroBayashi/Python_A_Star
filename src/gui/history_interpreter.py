@@ -5,10 +5,11 @@ from history.action_type import ActionType
 
 class HistoryInterpreter:
 
-    ANIM_SPEED = 20
+    ANIM_SPEED = 100
 
     # Constructor
     def __init__(self, history, grid):
+        self.m_current = None
         self.m_history = history
         self.m_grid = grid
 
@@ -24,11 +25,15 @@ class HistoryInterpreter:
             color = CellType.TESTED["color"]
         elif action.m_type == ActionType.ADD_TO_OPEN_SET:
             color = CellType.ON_QUEUE["color"]
+        elif action.m_type == ActionType.SET_CURRENT:
+            color = CellType.CURRENT["color"]
+            if self.m_current is not None:
+                self.m_grid.delete(self.m_current)
         else:
             color = CellType.VALIDATE["color"]
 
         x, y = action.m_element.m_x, action.m_element.m_y
-        self.m_grid.create_rectangle(
+        current = self.m_grid.create_rectangle(
             Cell.WIDTH * x,
             Cell.WIDTH * y,
             Cell.WIDTH * (x + 1),
@@ -36,3 +41,6 @@ class HistoryInterpreter:
             fill=color,
             tags="history"
         )
+
+        if action.m_type == ActionType.SET_CURRENT:
+            self.m_current = current
