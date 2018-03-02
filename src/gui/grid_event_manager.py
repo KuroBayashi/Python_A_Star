@@ -76,6 +76,11 @@ class GridEventManager:
         if self.m_editor_type in [GridEventManager.MOVE_START, GridEventManager.MOVE_END]:
             self.m_grid.m_cells[y][x].set_type(gct.CellType.EMPTY)
 
+            self.draw_preview(x, y, {
+                GridEventManager.MOVE_START : gct.CellType.START["color"],
+                GridEventManager.MOVE_END : gct.CellType.END["color"]
+            }[self.m_editor_type])
+
         self.m_grid.bind("<B1-Motion>", self.on_mouse_move)
 
     def on_mouse_move(self, event):
