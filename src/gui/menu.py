@@ -16,8 +16,11 @@ class Menu(Frame):
     COLOR_BG = "#29323a"
     COLOR_FG = "#f1f1f1"
     COLOR_HV = "#dbd9d9"
+    COLOR_ERR = "#f24d4d"
     FONT_TITLE = "Lobster"
     FONT_MAIN = "Open Sans"
+    SIZE_LABEL = 12
+    SIZE_LIST = 10
 
     def __init__(self, root):
         """
@@ -32,6 +35,7 @@ class Menu(Frame):
         self.m_algorithms_label, self.m_algorithms_list = self.build_algorithms_list()
         self.m_heuristics_label, self.m_heuristics_list = self.build_heuristics_list()
         self.m_options_label, self.m_options_list = self.build_options_list()
+        self.m_message = self.build_message()
         self.m_start_button = self.build_start_button()
         self.m_reset_button = self.build_reset_button()
         self.m_clear_button = self.build_clear_button()
@@ -58,7 +62,7 @@ class Menu(Frame):
         title = Label(self, text="Menu")
         title.configure(font=font.Font(family=Menu.FONT_TITLE, size=22))
         title.configure(background="#333E47", foreground=Menu.COLOR_FG)
-        title.grid(sticky=W + E, pady=10)
+        title.grid(sticky=W+E, pady=10)
 
         return title
 
@@ -70,7 +74,7 @@ class Menu(Frame):
         """
         # Label
         algo_label = Label(self, text="Choix de l'algorithme")
-        algo_label.configure(font=font.Font(family=Menu.FONT_MAIN, size=12))
+        algo_label.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LABEL))
         algo_label.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG)
         algo_label.grid(sticky=W, padx=5)
 
@@ -80,7 +84,7 @@ class Menu(Frame):
 
         for text, value in algo_list_def:
             rdo = Radiobutton(self, text=text, variable=x, value=value, tristatevalue=0)
-            rdo.configure(font=font.Font(family=Menu.FONT_MAIN, size=10))
+            rdo.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LIST))
             rdo.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG, selectcolor=Menu.COLOR_BG)
             rdo.configure(activebackground=Menu.COLOR_BG, activeforeground=Menu.COLOR_FG)
             rdo.grid(sticky=W, padx=20)
@@ -95,7 +99,7 @@ class Menu(Frame):
         """
         # Label
         heuristic_label = Label(self, text="Choix de l'heuristique")
-        heuristic_label.configure(font=font.Font(family=Menu.FONT_MAIN, size=12))
+        heuristic_label.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LABEL))
         heuristic_label.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG)
         heuristic_label.grid(sticky=W, padx=5)
 
@@ -105,7 +109,7 @@ class Menu(Frame):
 
         for text, value in heuristic_list_def:
             rdo = Radiobutton(self, text=text, variable=x, value=value, tristatevalue=0)
-            rdo.configure(font=font.Font(family=Menu.FONT_MAIN, size=10))
+            rdo.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LIST))
             rdo.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG, selectcolor=Menu.COLOR_BG)
             rdo.configure(activebackground=Menu.COLOR_BG, activeforeground=Menu.COLOR_FG)
             rdo.grid(sticky=W, padx=20)
@@ -120,7 +124,7 @@ class Menu(Frame):
         """
         # Label
         opt_label = Label(self, text="Options")
-        opt_label.configure(font=font.Font(family=Menu.FONT_MAIN, size=12))
+        opt_label.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LABEL))
         opt_label.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG)
         opt_label.grid(sticky=W, padx=5)
 
@@ -131,13 +135,26 @@ class Menu(Frame):
         for text in opt_list_def:
             x = IntVar()
             ckb = Checkbutton(self, text=text, variable=x, tristatevalue=0)
-            ckb.configure(font=font.Font(family=Menu.FONT_MAIN, size=10))
+            ckb.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LIST))
             ckb.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG, selectcolor=Menu.COLOR_BG)
             ckb.configure(activebackground=Menu.COLOR_BG, activeforeground=Menu.COLOR_FG)
             ckb.grid(sticky=W, padx=20)
             opt_list.append(x)
 
         return opt_label, opt_list
+
+    def build_message(self):
+        """
+        Construit le Label pour afficher un message retour a l'utilisateur
+
+        :return Label : Identifiant unique du Label
+        """
+        message = Label(self, text="")
+        message.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LABEL))
+        message.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_ERR)
+        message.grid(sticky=W+E, padx=5, pady=10)
+
+        return message
 
     def build_start_button(self):
         """
@@ -146,7 +163,7 @@ class Menu(Frame):
         :return Button : Identifiant unique du bouton
         """
         btn = Button(self, text="START", command=self.on_click_start)
-        btn.configure(font=font.Font(family=Menu.FONT_MAIN, size=12, weight="bold"))
+        btn.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LABEL, weight="bold"))
         btn.configure(background=Menu.COLOR_FG, foreground=Menu.COLOR_BG)
         btn.configure(cursor="hand2", width=20)
         btn.place(x=20, y=410)
@@ -187,6 +204,7 @@ class Menu(Frame):
         """
         # Clear
         self.on_click_clear()
+        self.m_message.configure(text="")
 
         # Heuristic
         heuristics = [Heuristic.manhattan, Heuristic.chebyshev, Heuristic.euclidean, Heuristic.octile]
@@ -216,7 +234,7 @@ class Menu(Frame):
                 a_star = AStar(self.master.m_grid, history, heuristic, options[0])
                 a_star.run(start, end)
             except ExceptionPathNotFound as e:
-                print("A* : ", e.m_message)
+                self.m_message.configure(text=e.m_message)
 
             history_interpreter.run()
         else:
@@ -224,7 +242,7 @@ class Menu(Frame):
                 a_star = AStar(self.master.m_grid, history, Heuristic.dijkstra, options[0])
                 a_star.run(start, end)
             except ExceptionPathNotFound as e:
-                print("A* : ", e.m_message)
+                self.m_message.configure(text=e.m_message)
 
             history_interpreter.run()
 
