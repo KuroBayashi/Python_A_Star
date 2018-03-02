@@ -1,7 +1,11 @@
 class MenuEventManager:
 
-    # Constructor
     def __init__(self, menu):
+        """
+        Constructeur
+
+        :param Menu menu : Menu sur lequel on va ecouter des evenements
+        """
         self.m_menu = menu
 
         self.m_menu.m_start_button.bind("<Enter>", self.on_mouse_enter)

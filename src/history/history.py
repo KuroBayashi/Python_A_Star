@@ -1,10 +1,16 @@
 from history.action import Action
 
 
-class History:
-
-    def add(self, atype, element):
-        self.m_actions.append(Action(atype, element))
+class History(list):
 
     def __init__(self):
-        self.m_actions = []
+        super().__init__()
+
+    def add(self, action_type, element):
+        """
+        Ajoute une action
+
+        :param dict action_type : Type d'action
+        :param object : Object sur lequel l'action a eu lieu
+        """
+        self.append(Action(action_type, element))

@@ -1,22 +1,37 @@
 from heapq import heappop, heappush
 from math import sqrt
 
-from algorithms.a_star.exception_path_not_found import ExceptionPathNotFound
-from algorithms.a_star.heuristic import Heuristic
 from history.action_type import ActionType
+from algorithms.a_star.exception_path_not_found import ExceptionPathNotFound
 
 
 class AStar:
 
-    # Constructor
-    def __init__(self, grid, history, heuristic=Heuristic.manhattan, diagonal_allowed=False):
+    def __init__(self, grid, history, heuristic, diagonal_allowed=False):
+        """
+        Constructeur
+
+        :param Grid grid : Grille contenant les noeuds
+        :param History history : Historique des actions effectues pour l'animation finale
+        :param callable heuristic : Fonction pour le calcul de l'heuristique entre 2 noeuds
+        :param bool diagonal_allowed : Deplacement en diagonal autorise ou non
+        """
         self.m_grid = grid
         self.m_heuristic = heuristic
         self.m_diagonal_allowed = diagonal_allowed
         self.m_history = history
 
-    # Run the solver
     def run(self, start, end):
+        """
+        Recherche du chemin le plus court
+
+        :param object(Node) start : Noeud de depart
+        :param object(Node) end : Noeud d'arrivee
+
+        :return List(Node) : Liste contenant les noeuds ordonees du depart vers l'arrivee
+
+        :except ExceptionPathNotFound : Erreur levee en cas de chemin impossible
+        """
         closed_set = []
         open_set = []
 
@@ -29,7 +44,7 @@ class AStar:
             self.m_history.add(ActionType.SET_CURRENT, current)
 
             if id(current) == id(end):
-                return self.path(start, current)
+                return self.path(current)
 
             closed_set.append(current)
             if id(current) != id(start):
@@ -55,38 +70,58 @@ class AStar:
 
         raise ExceptionPathNotFound()
 
-    # Get list of neighbors of the node
     def neighbors(self, node):
+        """
+        Recupere les noeuds atteignable
+
+        :param Node node : Noeud actuel
+
+        :return List(Node) : Liste des noeuds atteignable
+        """
         x, y = node.m_x, node.m_y
 
         coords = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
         if self.m_diagonal_allowed:
             coords += [(x - 1, y - 1), (x + 1, y - 1), (x - 1, y + 1), (x + 1, y + 1)]
 
-        return [
-            self.m_grid.m_cells[t[1]][t[0]] for t in coords
-            if 0 <= t[0] < len(self.m_grid.m_cells[0])
-                and 0 <= t[1] < len(self.m_grid.m_cells)
-                and self.m_grid.m_cells[t[1]][t[0]].m_traversable
-        ]
+        neighbors = []
+        for cx, cy in coords:
+            if 0 <= cx < len(self.m_grid.m_cells[0]) and \
+                    0 <= cy < len(self.m_grid.m_cells) and \
+                    self.m_grid.m_cells[cy][cx].m_traversable:
+                neighbors.append(self.m_grid.m_cells[cy][cx])
 
-    # Get list of nodes to build path
-    def path(self, start, end):
+        return neighbors
+
+    def path(self, node):
+        """
+        Construction du chemin le plus court
+
+        :param object(Node) node : Noeud d'arrivee
+
+        :return List(Node) : Liste ordonnee des noeuds du chemin (depart vers arrivee)
+        """
         path = []
 
-        while end.m_parent is not None:
-            path.append(end)
-            end = end.m_parent
+        while node is not None:
+            path.insert(0, node)
+            node = node.m_parent
 
-        self.m_history.add(ActionType.ADD_TO_PATH, start)
-        for node in reversed(path):
+        for node in path:
             self.m_history.add(ActionType.ADD_TO_PATH, node)
 
         return path
 
-    # Get "distance" (cost g) between 2 nodes
     @staticmethod
     def distance(a, b):
+        """
+        Calcul du `cout G` entre deux points
+
+        :param Node a : Noeud 1
+        :param Node b : Noeud 2
+
+        :return int : `Cout G`
+        """
         if a.m_x == b.m_x or a.m_y == b.m_y:
             return 1
         else:

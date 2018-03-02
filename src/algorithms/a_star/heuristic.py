@@ -2,7 +2,6 @@ from math import sqrt
 import sys
 
 
-
 class Heuristic:
 
     @staticmethod

@@ -6,19 +6,23 @@ import gui.menu as gm
 
 class Gui(Tk):
 
-    WIDTH = 861
-    HEIGHT = 511
+    WIDTH = 861 # + 1 pour la bordure droite de la grille
+    HEIGHT = 511 # + 1 pour la bordure basse de la grille
 
-    # Constructor
     def __init__(self):
+        """
+        Constructeur
+        """
         super().__init__()
         self.init_window()
 
         self.m_menu = gm.Menu(self)
         self.m_grid = gg.Grid(self)
 
-    # Build main window
     def init_window(self):
+        """
+        Initialise la fenetre principale
+        """
         self.title("Python - Pathfinding algorithms")
         self.geometry("%dx%d+%d+%d" % (
             Gui.WIDTH,
@@ -30,6 +34,8 @@ class Gui(Tk):
         self.minsize(self.winfo_width(), self.winfo_height())
         self.resizable(False, False)
 
-    # Show GUI
     def show(self):
+        """
+        Affiche la fenetre
+        """
         self.mainloop()
