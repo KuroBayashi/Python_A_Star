@@ -13,14 +13,13 @@ class Menu(Frame):
 
     WIDTH = 250
 
-    COLOR_BG = "#29323a"
-    COLOR_FG = "#f1f1f1"
-    COLOR_HV = "#dbd9d9"
-    COLOR_ERR = "#f24d4d"
-    FONT_TITLE = "Lobster"
-    FONT_MAIN = "Open Sans"
-    SIZE_LABEL = 12
-    SIZE_LIST = 10
+    COLOR = {"background": "#29323a", "foreground": "#f1f1f1", "hover": "#dbd9d9", "error": "#f24d4d"}
+    FONT = {"title": "Lobster", "main": "Open Sans"}
+    SIZE = {"label": 12, "list": 10}
+
+    ALGORITHMS = ["A*", "Dijkstra"]
+    HEURISTICS = ["Manhattan", "Chebyshev", "Euclidien", "Octile"]
+    OPTIONS = ["Autoriser les diagonales"]
 
     def __init__(self, root):
         """
@@ -47,7 +46,7 @@ class Menu(Frame):
         Initialise la fenetre du menu
         """
         self.configure(width=Menu.WIDTH)
-        self.configure(background=Menu.COLOR_BG)
+        self.configure(background=Menu.COLOR["background"])
         self.pack(fill=Y, side=RIGHT)
         self.grid_columnconfigure(0, weight=1)
         self.grid_propagate(0)
@@ -60,8 +59,8 @@ class Menu(Frame):
         """
         # Label
         title = Label(self, text="Menu")
-        title.configure(font=font.Font(family=Menu.FONT_TITLE, size=22))
-        title.configure(background="#333E47", foreground=Menu.COLOR_FG)
+        title.configure(font=font.Font(family=Menu.FONT["title"], size=22))
+        title.configure(background="#333E47", foreground=Menu.COLOR["foreground"])
         title.grid(sticky=W+E, pady=10)
 
         return title
@@ -74,19 +73,19 @@ class Menu(Frame):
         """
         # Label
         algo_label = Label(self, text="Choix de l'algorithme")
-        algo_label.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LABEL))
-        algo_label.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG)
+        algo_label.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"]))
+        algo_label.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
         algo_label.grid(sticky=W, padx=5)
 
         # Radio buttons
-        algo_list_def = [("A*", 1), ("Dijkstra", 2)]
         x = IntVar(value=1)
 
-        for text, value in algo_list_def:
-            rdo = Radiobutton(self, text=text, variable=x, value=value, tristatevalue=0)
-            rdo.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LIST))
-            rdo.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG, selectcolor=Menu.COLOR_BG)
-            rdo.configure(activebackground=Menu.COLOR_BG, activeforeground=Menu.COLOR_FG)
+        for index, text in enumerate(Menu.ALGORITHMS):
+            rdo = Radiobutton(self, text=text, variable=x, value=index+1, tristatevalue=0)
+            rdo.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["list"]))
+            rdo.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
+            rdo.configure(activebackground=Menu.COLOR["background"], activeforeground=Menu.COLOR["foreground"])
+            rdo.configure(selectcolor=Menu.COLOR["background"])
             rdo.grid(sticky=W, padx=20)
 
         return algo_label, x
@@ -99,19 +98,19 @@ class Menu(Frame):
         """
         # Label
         heuristic_label = Label(self, text="Choix de l'heuristique")
-        heuristic_label.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LABEL))
-        heuristic_label.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG)
+        heuristic_label.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"]))
+        heuristic_label.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
         heuristic_label.grid(sticky=W, padx=5)
 
         # Radio buttons
-        heuristic_list_def = [("Manhattan", 1), ("Chebyshev", 2), ("Euclidien", 3), ("Octile", 4)]
         x = IntVar(value=1)
 
-        for text, value in heuristic_list_def:
-            rdo = Radiobutton(self, text=text, variable=x, value=value, tristatevalue=0)
-            rdo.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LIST))
-            rdo.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG, selectcolor=Menu.COLOR_BG)
-            rdo.configure(activebackground=Menu.COLOR_BG, activeforeground=Menu.COLOR_FG)
+        for index, text in enumerate(Menu.HEURISTICS):
+            rdo = Radiobutton(self, text=text, variable=x, value=index+1, tristatevalue=0)
+            rdo.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["list"]))
+            rdo.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
+            rdo.configure(activebackground=Menu.COLOR["background"], activeforeground=Menu.COLOR["foreground"])
+            rdo.configure(selectcolor=Menu.COLOR["background"])
             rdo.grid(sticky=W, padx=20)
 
         return heuristic_label, x
@@ -124,20 +123,20 @@ class Menu(Frame):
         """
         # Label
         opt_label = Label(self, text="Options")
-        opt_label.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LABEL))
-        opt_label.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG)
+        opt_label.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"]))
+        opt_label.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
         opt_label.grid(sticky=W, padx=5)
 
         # Checkbox
         opt_list = []
-        opt_list_def = ["Autoriser les diagonales"]
 
-        for text in opt_list_def:
+        for text in Menu.OPTIONS:
             x = IntVar()
             ckb = Checkbutton(self, text=text, variable=x, tristatevalue=0)
-            ckb.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LIST))
-            ckb.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_FG, selectcolor=Menu.COLOR_BG)
-            ckb.configure(activebackground=Menu.COLOR_BG, activeforeground=Menu.COLOR_FG)
+            ckb.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["list"]))
+            ckb.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
+            ckb.configure(activebackground=Menu.COLOR["background"], activeforeground=Menu.COLOR["foreground"])
+            ckb.configure(selectcolor=Menu.COLOR["background"])
             ckb.grid(sticky=W, padx=20)
             opt_list.append(x)
 
@@ -150,8 +149,8 @@ class Menu(Frame):
         :return Label : Identifiant unique du Label
         """
         message = Label(self, text="")
-        message.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LABEL))
-        message.configure(background=Menu.COLOR_BG, foreground=Menu.COLOR_ERR)
+        message.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"]))
+        message.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["error"])
         message.grid(sticky=W+E, padx=5, pady=10)
 
         return message
@@ -163,8 +162,8 @@ class Menu(Frame):
         :return Button : Identifiant unique du bouton
         """
         btn = Button(self, text="START", command=self.on_click_start)
-        btn.configure(font=font.Font(family=Menu.FONT_MAIN, size=Menu.SIZE_LABEL, weight="bold"))
-        btn.configure(background=Menu.COLOR_FG, foreground=Menu.COLOR_BG)
+        btn.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"], weight="bold"))
+        btn.configure(background=Menu.COLOR["foreground"], foreground=Menu.COLOR["background"])
         btn.configure(cursor="hand2", width=20)
         btn.place(x=20, y=410)
 
@@ -176,9 +175,9 @@ class Menu(Frame):
 
         :return Button : Identifiant unique du bouton
         """
-        btn = Button(self, text="Reset", command=self.on_click_reset)
-        btn.configure(font=font.Font(family=Menu.FONT_MAIN, size=8))
-        btn.configure(background=Menu.COLOR_FG, foreground=Menu.COLOR_BG)
+        btn = Button(self, text="Clear Wall", command=self.on_click_clear_wall)
+        btn.configure(font=font.Font(family=Menu.FONT["main"], size=8))
+        btn.configure(background=Menu.COLOR["foreground"], foreground=Menu.COLOR["background"])
         btn.configure(cursor="hand2", width=15)
         btn.place(x=20, y=470)
 
@@ -190,9 +189,9 @@ class Menu(Frame):
 
         :return Button : Identifiant unique du bouton
         """
-        btn = Button(self, text="Clear Path", command=self.on_click_clear)
-        btn.configure(font=font.Font(family=Menu.FONT_MAIN, size=8))
-        btn.configure(background=Menu.COLOR_FG, foreground=Menu.COLOR_BG)
+        btn = Button(self, text="Clear Path", command=self.on_click_clear_path)
+        btn.configure(font=font.Font(family=Menu.FONT["main"], size=8))
+        btn.configure(background=Menu.COLOR["foreground"], foreground=Menu.COLOR["background"])
         btn.configure(cursor="hand2", width=15)
         btn.place(anchor="ne", x=230, y=470)
 
@@ -203,7 +202,7 @@ class Menu(Frame):
         Lance la resolution et la previsualisation
         """
         # Clear
-        self.on_click_clear()
+        self.on_click_clear_path()
         self.m_message.configure(text="")
 
         # Heuristic
@@ -229,32 +228,26 @@ class Menu(Frame):
                     end = self.master.m_grid.m_cells[y][x]
 
         # Algorithm
-        if self.m_algorithms_list.get() == 1:
-            try:
+        try:
+            if self.m_algorithms_list.get() == self.ALGORITHMS.index("A*") + 1:
                 a_star = AStar(self.master.m_grid, history, heuristic, options[0])
-                a_star.run(start, end)
-            except ExceptionPathNotFound as e:
-                self.m_message.configure(text=e.m_message)
-
-            history_interpreter.run()
-        else:
-            try:
+            else:
                 a_star = AStar(self.master.m_grid, history, Heuristic.dijkstra, options[0])
-                a_star.run(start, end)
-            except ExceptionPathNotFound as e:
-                self.m_message.configure(text=e.m_message)
 
+            a_star.run(start, end)
             history_interpreter.run()
+        except ExceptionPathNotFound as e:
+            self.m_message.configure(text=e.m_message)
 
-    def on_click_clear(self):
+    def on_click_clear_path(self):
         """
         Supprime le rendu de la precedente resolution
         """
         self.master.m_grid.clear()
 
-    def on_click_reset(self):
+    def on_click_clear_wall(self):
         """
         Supprime le rendu de la precedente resolution, supprime tous les murs, et remet les valeurs des cellules a 0
         """
-        self.on_click_clear()
+        self.on_click_clear_path()
         self.master.m_grid.reset()

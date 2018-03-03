@@ -19,8 +19,8 @@ class MenuEventManager:
 
     # On mouse enter
     def on_mouse_enter(self, event):
-        event.widget.configure(background=self.m_menu.COLOR_HV)
+        event.widget.configure(background=self.m_menu.COLOR["hover"])
 
     # On mouse leave
     def on_mouse_leave(self, event):
-        event.widget.configure(background=self.m_menu.COLOR_FG)
+        event.widget.configure(background=self.m_menu.COLOR["foreground"])
