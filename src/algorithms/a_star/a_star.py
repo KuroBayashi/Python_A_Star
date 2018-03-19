@@ -1,5 +1,6 @@
 from heapq import heappop, heappush
 from math import sqrt
+from timeit import default_timer
 
 from history.action_type import ActionType
 from algorithms.a_star.exception_path_not_found import ExceptionPathNotFound
@@ -20,6 +21,7 @@ class AStar:
         self.m_heuristic = heuristic
         self.m_diagonal_allowed = diagonal_allowed
         self.m_history = history
+        self.m_start_time = 0
 
     def run(self, start, end):
         """
@@ -32,6 +34,8 @@ class AStar:
 
         :except ExceptionPathNotFound : Erreur levee en cas de chemin impossible
         """
+        self.m_start_time = default_timer()
+
         closed_set = []
         open_set = []
 
@@ -41,16 +45,15 @@ class AStar:
 
         while open_set:
             current = heappop(open_set)
-            self.m_history.add(ActionType.SET_CURRENT, current)
+            self.m_history.add(ActionType.SET_CURRENT, current, default_timer()-self.m_start_time)
 
             if id(current) == id(end):
                 return self.path(current)
 
             closed_set.append(current)
             if id(current) != id(start):
-                self.m_history.add(ActionType.ADD_TO_CLOSED_SET, current)
+                self.m_history.add(ActionType.ADD_TO_CLOSED_SET, current, default_timer()-self.m_start_time)
 
-            self.m_history.add(ActionType.SET_CURRENT, current)
             for node in self.neighbors(current):
                 if node in closed_set:
                     continue
@@ -66,7 +69,7 @@ class AStar:
                     node.set_cost_h(self.m_heuristic(node, end))
                     node.set_parent(current)
                     heappush(open_set, node)
-                    self.m_history.add(ActionType.ADD_TO_OPEN_SET, node)
+                    self.m_history.add(ActionType.ADD_TO_OPEN_SET, node, default_timer()-self.m_start_time)
 
         raise ExceptionPathNotFound()
 
@@ -108,7 +111,7 @@ class AStar:
             node = node.m_parent
 
         for node in path:
-            self.m_history.add(ActionType.ADD_TO_PATH, node)
+            self.m_history.add(ActionType.ADD_TO_PATH, node, default_timer()-self.m_start_time)
 
         return path
 

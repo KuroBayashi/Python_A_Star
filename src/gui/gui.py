@@ -1,13 +1,16 @@
-from tkinter import Tk
+from tkinter import Tk, Y, RIGHT, LEFT
 
 import gui.grid as gg
-import gui.menu as gm
+import gui.menu as gms
+import gui.menu_animation as gma
 
 
 class Gui(Tk):
 
-    WIDTH = 861 # + 1 pour la bordure droite de la grille
-    HEIGHT = 511 # + 1 pour la bordure basse de la grille
+    GRID_MARGIN = 5
+
+    WIDTH = gg.Grid.WIDTH + gms.Menu.WIDTH + 2 * GRID_MARGIN + gma.MenuAnimation.WIDTH
+    HEIGHT = max(gg.Grid.HEIGHT, gms.Menu.MIN_HEIGHT, gma.MenuAnimation.MIN_HEIGHT) + 2 * GRID_MARGIN
 
     def __init__(self):
         """
@@ -16,8 +19,11 @@ class Gui(Tk):
         super().__init__()
         self.init_window()
 
-        self.m_menu = gm.Menu(self)
         self.m_grid = gg.Grid(self)
+        self.m_menu = gms.Menu(self)
+        self.m_menu_animation = gma.MenuAnimation(self)
+
+        self.config_template()
 
     def init_window(self):
         """
@@ -33,6 +39,11 @@ class Gui(Tk):
         self.update()
         self.minsize(self.winfo_width(), self.winfo_height())
         self.resizable(False, False)
+
+    def config_template(self):
+        self.m_menu_animation.pack(fill=Y, side=LEFT)
+        self.m_menu.pack(fill=Y, side=RIGHT)
+        self.m_grid.pack(expand=True)
 
     def show(self):
         """

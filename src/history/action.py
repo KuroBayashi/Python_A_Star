@@ -1,6 +1,6 @@
 class Action:
 
-    def __init__(self, action_type, element):
+    def __init__(self, action_type, element, passed_time):
         """
         Constructeur
 
@@ -9,3 +9,4 @@ class Action:
         """
         self.m_type = action_type
         self.m_element = element
+        self.m_passed_time = passed_time

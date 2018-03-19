@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Y, RIGHT, E, W, font, Radiobutton, IntVar, Checkbutton, Button
+from tkinter import Frame, Label, E, W, font, Radiobutton, IntVar, Checkbutton, Button, DISABLED, ACTIVE
 
 from algorithms.a_star.a_star import AStar
 from algorithms.a_star.exception_path_not_found import ExceptionPathNotFound
@@ -12,6 +12,7 @@ from history.history import History
 class Menu(Frame):
 
     WIDTH = 250
+    MIN_HEIGHT = 500
 
     COLOR = {"background": "#29323a", "foreground": "#f1f1f1", "hover": "#dbd9d9", "error": "#f24d4d"}
     FONT = {"title": "Lobster", "main": "Open Sans"}
@@ -31,9 +32,9 @@ class Menu(Frame):
         self.setup_frame()
 
         self.m_title = self.build_title()
-        self.m_algorithms_label, self.m_algorithms_list = self.build_algorithms_list()
-        self.m_heuristics_label, self.m_heuristics_list = self.build_heuristics_list()
-        self.m_options_label, self.m_options_list = self.build_options_list()
+        self.m_algorithms_list = self.build_algorithms_list()
+        self.m_heuristics_list = self.build_heuristics_list()
+        self.m_options_list = self.build_options_list()
         self.m_message = self.build_message()
         self.m_start_button = self.build_start_button()
         self.m_reset_button = self.build_reset_button()
@@ -41,13 +42,16 @@ class Menu(Frame):
 
         self.m_event_manager = MenuEventManager(self)
 
+        self.m_history = History()
+        self.m_history_interpreter = HistoryInterpreter(self.m_history, self.master.m_grid)
+
     def setup_frame(self):
         """
         Initialise la fenetre du menu
         """
         self.configure(width=Menu.WIDTH)
         self.configure(background=Menu.COLOR["background"])
-        self.pack(fill=Y, side=RIGHT)
+        self.pack_propagate(0)
         self.grid_columnconfigure(0, weight=1)
         self.grid_propagate(0)
 
@@ -58,7 +62,7 @@ class Menu(Frame):
         :return Label : Identifiant unique du titre
         """
         # Label
-        title = Label(self, text="Menu")
+        title = Label(self, text="Resolution")
         title.configure(font=font.Font(family=Menu.FONT["title"], size=22))
         title.configure(background="#333E47", foreground=Menu.COLOR["foreground"])
         title.grid(sticky=W+E, pady=10)
@@ -88,7 +92,7 @@ class Menu(Frame):
             rdo.configure(selectcolor=Menu.COLOR["background"])
             rdo.grid(sticky=W, padx=20)
 
-        return algo_label, x
+        return x
 
     def build_heuristics_list(self):
         """
@@ -113,7 +117,7 @@ class Menu(Frame):
             rdo.configure(selectcolor=Menu.COLOR["background"])
             rdo.grid(sticky=W, padx=20)
 
-        return heuristic_label, x
+        return x
 
     def build_options_list(self):
         """
@@ -140,7 +144,7 @@ class Menu(Frame):
             ckb.grid(sticky=W, padx=20)
             opt_list.append(x)
 
-        return opt_label, opt_list
+        return opt_list
 
     def build_message(self):
         """
@@ -165,7 +169,7 @@ class Menu(Frame):
         btn.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"], weight="bold"))
         btn.configure(background=Menu.COLOR["foreground"], foreground=Menu.COLOR["background"])
         btn.configure(cursor="hand2", width=20)
-        btn.place(x=20, y=410)
+        btn.place(x=20, y=420)
 
         return btn
 
@@ -201,6 +205,15 @@ class Menu(Frame):
         """
         Lance la resolution et la previsualisation
         """
+        # Button state
+        self.m_start_button.configure(state=DISABLED)
+        self.m_clear_button.configure(state=DISABLED)
+        self.m_reset_button.configure(state=DISABLED)
+        self.master.m_menu_animation.m_play_button.configure(state=ACTIVE)
+        self.master.m_menu_animation.m_stop_button.configure(state=ACTIVE)
+        self.master.m_grid.unbind("<ButtonPress-1>")
+        self.master.m_grid.unbind("<ButtonRelease-1>")
+
         # Clear
         self.on_click_clear_path()
         self.m_message.configure(text="")
@@ -213,8 +226,7 @@ class Menu(Frame):
         options = [bool(opt.get()) for opt in self.m_options_list]
 
         # History
-        history = History()
-        history_interpreter = HistoryInterpreter(history, self.master.m_grid)
+        self.m_history.clear()
 
         # Start / End nodes
         start = None
@@ -230,18 +242,27 @@ class Menu(Frame):
         # Algorithm
         try:
             if self.m_algorithms_list.get() == self.ALGORITHMS.index("A*") + 1:
-                a_star = AStar(self.master.m_grid, history, heuristic, options[0])
+                a_star = AStar(self.master.m_grid, self.m_history, heuristic, options[0])
             else:
-                a_star = AStar(self.master.m_grid, history, Heuristic.dijkstra, options[0])
+                a_star = AStar(self.master.m_grid, self.m_history, Heuristic.dijkstra, options[0])
 
             a_star.run(start, end)
-            history_interpreter.run()
+
+            self.m_history_interpreter.set_animation_speed(self.master.m_menu_animation.m_scale.get())
+            self.m_history_interpreter.run(True)
         except ExceptionPathNotFound as e:
             self.m_message.configure(text=e.m_message)
+            self.m_start_button.configure(state=ACTIVE)
+            self.m_clear_button.configure(state=ACTIVE)
+            self.m_reset_button.configure(state=ACTIVE)
+            self.master.m_menu_animation.m_play_button.configure(state=DISABLED)
+            self.master.m_menu_animation.m_stop_button.configure(state=DISABLED)
+            self.master.m_grid.bind("<ButtonPress-1>", self.master.m_grid.m_event_manager.on_mouse_down)
+            self.master.m_grid.bind("<ButtonRelease-1>", self.master.m_grid.m_event_manager.on_mouse_up)
 
     def on_click_clear_path(self):
         """
-        Supprime le rendu de la precedente resolution
+        Supprime le rendu de la precedente resolution,
         """
         self.master.m_grid.clear()
 

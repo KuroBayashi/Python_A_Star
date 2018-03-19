@@ -1,4 +1,4 @@
-from tkinter import Canvas, BOTH
+from tkinter import Canvas
 
 import gui.cell as gcc
 import gui.cell_type as gct
@@ -6,6 +6,12 @@ from gui.grid_event_manager import GridEventManager
 
 
 class Grid(Canvas):
+
+    COLS = 25
+    ROWS = 25
+
+    WIDTH = gcc.Cell.WIDTH * COLS + 1  # + 1 pour la bordure droite
+    HEIGHT = gcc.Cell.WIDTH * ROWS + 1  # + 1 pour la bordure basse
 
     def __init__(self, root):
         """
@@ -26,9 +32,9 @@ class Grid(Canvas):
         """
         Initialise le canvas
         """
-        self.configure(background="#f1f1f1", highlightthickness=0)
-        self.pack(expand=True, fill=BOTH, padx=5, pady=5)
-        self.update()
+        self.configure(width=Grid.WIDTH, height=Grid.HEIGHT)
+        self.configure(background="#7054b7", highlightthickness=0)
+        self.pack_propagate(0)
 
     def draw_lines(self):
         """
@@ -36,21 +42,21 @@ class Grid(Canvas):
         """
         self.update()
 
-        for i in range(0, self.winfo_width(), gcc.Cell.WIDTH):
-            self.create_line(0, i, self.winfo_width(), i)
-        for j in range(0, self.winfo_height(), gcc.Cell.WIDTH):
-            self.create_line(j, 0,  j, self.winfo_height())
+        for i in range(Grid.ROWS):
+            self.create_line(0, i * gcc.Cell.WIDTH, Grid.WIDTH, i * gcc.Cell.WIDTH)
+        for j in range(Grid.COLS):
+            self.create_line(j * gcc.Cell.WIDTH, 0,  j * gcc.Cell.WIDTH, Grid.HEIGHT)
 
     def build_cells(self):
         """
         Construction des cellules de la grille et positionnement des cellules de départ et d'arrivee
         """
         self.m_cells = [
-            [gcc.Cell(self, x, y, gct.CellType.EMPTY) for x in range(self.winfo_width() // gcc.Cell.WIDTH)]
-            for y in range(self.winfo_height() // gcc.Cell.WIDTH)
+            [gcc.Cell(self, x, y, gct.CellType.EMPTY) for x in range(Grid.COLS)]
+            for y in range(Grid.ROWS)
         ]
-        self.m_cells[1][1].set_type(gct.CellType.START)
-        self.m_cells[len(self.m_cells) - 2][len(self.m_cells[0]) - 2].set_type(gct.CellType.END)
+        self.m_cells[0][0].set_type(gct.CellType.START)
+        self.m_cells[len(self.m_cells) - 1][len(self.m_cells[0]) - 1].set_type(gct.CellType.END)
 
     def clear(self):
         """
