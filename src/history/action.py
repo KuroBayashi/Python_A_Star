@@ -4,8 +4,13 @@ class Action:
         """
         Constructeur
 
-        :param ActionType action_type : Type d'action effectuee
-        :param object element : Element sur lequel l'action a ete effectue
+        :param action_type: Type d'action effectuee
+        :param element: Element sur lequel l'action a ete effectue
+        :param passed_time: Temps ecoule avant execution de l'action
+
+        :type action_type: ActionType
+        :type element: object
+        :type passed_time: double
         """
         self.m_type = action_type
         self.m_element = element

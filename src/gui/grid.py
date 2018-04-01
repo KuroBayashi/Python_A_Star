@@ -17,7 +17,9 @@ class Grid(Canvas):
         """
         Constructeur
 
-        :param Tk root : Fenetre racine
+        :param root : Fenetre racine
+
+        :type root: Tk
         """
         super().__init__(root)
         self.setup_canvas()
@@ -40,8 +42,6 @@ class Grid(Canvas):
         """
         Dessine les lignes de la grille
         """
-        self.update()
-
         for i in range(Grid.ROWS):
             self.create_line(0, i * gcc.Cell.WIDTH, Grid.WIDTH, i * gcc.Cell.WIDTH)
         for j in range(Grid.COLS):
@@ -81,3 +81,9 @@ class Grid(Canvas):
 
                 if self.m_cells[y][x].m_type == gct.CellType.WALL:
                     self.m_cells[y][x].set_type(gct.CellType.EMPTY)
+
+    def enable_event(self):
+        self.m_event_manager.enable_event()
+
+    def disable_event(self):
+        self.m_event_manager.disable_event()

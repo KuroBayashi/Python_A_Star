@@ -17,7 +17,7 @@ class Gui(Tk):
         Constructeur
         """
         super().__init__()
-        self.init_window()
+        self.setup_tk()
 
         self.m_grid = gg.Grid(self)
         self.m_menu = gms.Menu(self)
@@ -25,7 +25,7 @@ class Gui(Tk):
 
         self.config_template()
 
-    def init_window(self):
+    def setup_tk(self):
         """
         Initialise la fenetre principale
         """

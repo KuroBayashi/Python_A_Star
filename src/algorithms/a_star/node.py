@@ -4,9 +4,13 @@ class Node:
         """
         Constructeur
 
-        :param int x : Position horizontale
-        :param int y : Position verticale
-        :param bool traversable : Traversabilite
+        :param x: Position horizontale
+        :param y: Position verticale
+        :param traversable: Traversabilite
+
+        :type x: int
+        :type y: int
+        :type traversable: bool
         """
         self.m_x = x
         self.m_y = y
@@ -29,7 +33,9 @@ class Node:
         """
         Change le `cout G`
 
-        :param int cost_g : Nouveau `cout G`
+        :param cost_g : Nouveau `cout G`
+
+        :type cost_g: int
         """
         self.m_cost_g = cost_g
         self.m_cost_f = self.m_cost_g + self.m_cost_h
@@ -38,7 +44,9 @@ class Node:
         """
         Change le `cout H`
 
-        :param int cost_heuristic : Nouveau `cout H`
+        :param cost_heuristic: Nouveau `cout H`
+
+        :type cost_heuristic: int
         """
         self.m_cost_h = cost_heuristic
         self.m_cost_f = self.m_cost_g + self.m_cost_h
@@ -47,7 +55,9 @@ class Node:
         """
         Change la traversabilite
 
-        :param bool traversable : Nouvelle traversabilite
+        :param traversable : Nouvelle traversabilite
+
+        :type traversable: bool
         """
         self.m_traversable = traversable
 
@@ -55,7 +65,9 @@ class Node:
         """
         Change le noeud parent
 
-        :param Node parent : Nouveau noeud parent
+        :param parent: Nouveau noeud parent
+
+        :type parent: Node
         """
         self.m_parent = parent
 

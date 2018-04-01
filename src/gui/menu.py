@@ -38,7 +38,6 @@ class Menu(Frame):
         self.m_message = self.build_message()
         self.m_start_button = self.build_start_button()
         self.m_reset_button = self.build_reset_button()
-        self.m_clear_button = self.build_clear_button()
 
         self.m_event_manager = MenuEventManager(self)
 
@@ -168,8 +167,8 @@ class Menu(Frame):
         btn = Button(self, text="START", command=self.on_click_start)
         btn.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"], weight="bold"))
         btn.configure(background=Menu.COLOR["foreground"], foreground=Menu.COLOR["background"])
-        btn.configure(cursor="hand2", width=20)
-        btn.place(x=20, y=420)
+        btn.configure(cursor="hand2")
+        btn.grid(sticky=W+E, padx=20, pady=10)
 
         return btn
 
@@ -182,23 +181,8 @@ class Menu(Frame):
         btn = Button(self, text="Clear Wall", command=self.on_click_clear_wall)
         btn.configure(font=font.Font(family=Menu.FONT["main"], size=8))
         btn.configure(background=Menu.COLOR["foreground"], foreground=Menu.COLOR["background"])
-        btn.configure(cursor="hand2", width=15)
-        btn.place(x=20, y=470)
-
-        return btn
-
-    def build_clear_button(self):
-        """
-        Construit le bouton pour supprimer la visualisation de la precedente resolution
-
-        :return Button : Identifiant unique du bouton
-        """
-        btn = Button(self, text="Clear Path", command=self.on_click_clear_path)
-        btn.configure(font=font.Font(family=Menu.FONT["main"], size=8))
-        btn.configure(background=Menu.COLOR["foreground"], foreground=Menu.COLOR["background"])
-        btn.configure(cursor="hand2", width=15)
-        btn.place(anchor="ne", x=230, y=470)
-
+        btn.configure(cursor="hand2")
+        btn.grid(sticky=W+E, padx=20)
         return btn
 
     def on_click_start(self):
@@ -207,12 +191,13 @@ class Menu(Frame):
         """
         # Button state
         self.m_start_button.configure(state=DISABLED)
-        self.m_clear_button.configure(state=DISABLED)
         self.m_reset_button.configure(state=DISABLED)
         self.master.m_menu_animation.m_play_button.configure(state=ACTIVE)
         self.master.m_menu_animation.m_stop_button.configure(state=ACTIVE)
         self.master.m_grid.unbind("<ButtonPress-1>")
         self.master.m_grid.unbind("<ButtonRelease-1>")
+        if self.master.m_menu_animation.m_scale.get() <= 0:
+            self.master.m_menu_animation.m_scale.set(1)
 
         # Clear
         self.on_click_clear_path()
@@ -252,9 +237,7 @@ class Menu(Frame):
             self.m_history_interpreter.run(True)
         except ExceptionPathNotFound as e:
             self.m_message.configure(text=e.m_message)
-            self.m_start_button.configure(state=ACTIVE)
-            self.m_clear_button.configure(state=ACTIVE)
-            self.m_reset_button.configure(state=ACTIVE)
+            self.set_buttons_state(ACTIVE)
             self.master.m_menu_animation.m_play_button.configure(state=DISABLED)
             self.master.m_menu_animation.m_stop_button.configure(state=DISABLED)
             self.master.m_grid.bind("<ButtonPress-1>", self.master.m_grid.m_event_manager.on_mouse_down)
@@ -272,3 +255,7 @@ class Menu(Frame):
         """
         self.on_click_clear_path()
         self.master.m_grid.reset()
+
+    def set_buttons_state(self, state):
+        self.m_start_button.configure(state=state)
+        self.m_reset_button.configure(state=state)

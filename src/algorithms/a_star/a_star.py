@@ -12,10 +12,15 @@ class AStar:
         """
         Constructeur
 
-        :param Grid grid : Grille contenant les noeuds
-        :param History history : Historique des actions effectues pour l'animation finale
-        :param callable heuristic : Fonction pour le calcul de l'heuristique entre 2 noeuds
-        :param bool diagonal_allowed : Deplacement en diagonal autorise ou non
+        :param grid: Grille contenant les noeuds
+        :param history: Historique des actions effectues pour l'animation finale
+        :param heuristic: Fonction pour le calcul de l'heuristique entre 2 noeuds
+        :param diagonal_allowed: Deplacement en diagonal autorise ou non
+
+        :type grid: Grid
+        :type history: History
+        :type heuristic: callable
+        :type diagonal_allowed: bool
         """
         self.m_grid = grid
         self.m_heuristic = heuristic
@@ -27,12 +32,15 @@ class AStar:
         """
         Recherche du chemin le plus court
 
-        :param object(Node) start : Noeud de depart
-        :param object(Node) end : Noeud d'arrivee
+        :param start: Noeud de depart
+        :param end: Noeud d'arrivee
 
-        :return List(Node) : Liste contenant les noeuds ordonees du depart vers l'arrivee
+        :type start: Node
+        :type end: Node
 
-        :except ExceptionPathNotFound : Erreur levee en cas de chemin impossible
+        :return: list(Node)
+
+        :except ExceptionPathNotFound: Erreur levee en cas de chemin impossible
         """
         self.m_start_time = default_timer()
 
@@ -75,11 +83,13 @@ class AStar:
 
     def neighbors(self, node):
         """
-        Recupere les noeuds atteignable
+        Recupere les noeuds atteignables
 
-        :param Node node : Noeud actuel
+        :param node: Noeud actuel
 
-        :return List(Node) : Liste des noeuds atteignable
+        :type node: None
+
+        :return: list(Node)
         """
         x, y = node.m_x, node.m_y
 
@@ -98,11 +108,14 @@ class AStar:
 
     def path(self, node):
         """
-        Construction du chemin le plus court
+        Construction du chemin le plus court sous forme de liste ordonee des noeuds qui le compose
+        (depart vers arrivee)
 
-        :param object(Node) node : Noeud d'arrivee
+        :param node: Noeud d'arrivee
 
-        :return List(Node) : Liste ordonnee des noeuds du chemin (depart vers arrivee)
+        :type node: Node
+
+        :return: list(Node)
         """
         path = []
 
@@ -120,10 +133,13 @@ class AStar:
         """
         Calcul du `cout G` entre deux points
 
-        :param Node a : Noeud 1
-        :param Node b : Noeud 2
+        :param a: Noeud 1
+        :param b: Noeud 2
 
-        :return int : `Cout G`
+        :type a: Node
+        :type b: Node
+
+        :return: int
         """
         if a.m_x == b.m_x or a.m_y == b.m_y:
             return 1

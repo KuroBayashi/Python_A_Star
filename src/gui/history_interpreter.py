@@ -66,6 +66,7 @@ class HistoryInterpreter:
             elif 0 < self.m_current_index <= len(self.m_history) and self.m_animation_speed < 0:
                 self.m_canvas.delete(self.m_history_shapes.pop())
                 self.m_current_index -= 1
+                self.update_info()
 
         self.m_canvas.after(abs(self.m_animation_speed), self.run)
 
@@ -84,12 +85,19 @@ class HistoryInterpreter:
         )
         self.m_history_shapes.append(current)
 
-        self.m_canvas.master.m_menu_animation.m_informations_displayer.m_operations_count.configure(
-            text="{:d}".format(self.m_current_index))
-
-        self.m_canvas.master.m_menu_animation.m_informations_displayer.m_time.configure(
-            text="{:f}".format(self.m_history[self.m_current_index].m_passed_time * 1000))
+        self.update_info()
 
         if self.m_history[self.m_current_index].m_type == ActionType.SET_CURRENT:
             self.m_canvas.delete(self.m_current)
             self.m_current = current
+
+    def update_info(self):
+        """
+        Change le texte des informations en fonction de l'action en cours de rendu
+        """
+        self.m_canvas.master.m_menu_animation.m_informations_displayer.set_operations(
+            self.m_current_index
+        )
+        self.m_canvas.master.m_menu_animation.m_informations_displayer.set_time(
+            self.m_history[self.m_current_index].m_passed_time
+        )

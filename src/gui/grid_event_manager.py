@@ -18,8 +18,15 @@ class GridEventManager:
         self.m_editor_type = None
         self.m_preview_id = None
 
+        self.enable_event()
+
+    def enable_event(self):
         self.m_grid.bind("<ButtonPress-1>", self.on_mouse_down)
         self.m_grid.bind("<ButtonRelease-1>", self.on_mouse_up)
+
+    def disable_event(self):
+        self.m_grid.unbind("<ButtonPress-1>")
+        self.m_grid.unbind("<ButtonRelease-1>")
 
     def draw_preview(self, x, y, color):
         """
