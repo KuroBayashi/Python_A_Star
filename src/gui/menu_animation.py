@@ -1,15 +1,11 @@
-from tkinter import Frame, Label, E, W, font, Scale, Button, DISABLED, ACTIVE
+from tkinter import Frame, Label, font, Scale, Button, DISABLED, ACTIVE
 
-from gui.informations_displayer import InformationsDisplayer
+from gui.config import Config
 
 
 class MenuAnimation(Frame):
-    WIDTH = 250
-    MIN_HEIGHT = 500
 
-    COLOR = {"background": "#29323a", "foreground": "#f1f1f1", "hover": "#dbd9d9", "error": "#f24d4d"}
-    FONT = {"title": "Lobster", "main": "Open Sans"}
-    SIZE = {"large": 12, "medium": 10, "small": 8}
+    WIDTH = 250
 
     def __init__(self, root):
         """
@@ -20,28 +16,21 @@ class MenuAnimation(Frame):
         :type root: Tk
         """
         super().__init__(root)
-        self.setup_frame()
+        self.config_frame()
 
         self.build_title()
         self.m_scale = self.build_speed_scale()
         self.m_play_button = self.build_play_pause_button()
         self.m_stop_button = self.build_stop_button()
 
-        self.m_informations_displayer = InformationsDisplayer(self)
-        self.config_template()
-
-    def setup_frame(self):
+    def config_frame(self):
         """
         Initialise la fenetre du menu
         """
         self.configure(width=MenuAnimation.WIDTH)
-        self.configure(background=MenuAnimation.COLOR["background"])
-        self.pack_propagate(0)
-        self.grid_columnconfigure(0, weight=1)
+        self.configure(background=Config.COLOR["main-bg"])
         self.grid_propagate(0)
-
-    def config_template(self):
-        self.m_informations_displayer.grid()
+        self.columnconfigure(0, weight=1)
 
     def build_title(self):
         """
@@ -50,13 +39,13 @@ class MenuAnimation(Frame):
         title = Label(self, text="Animation")
         title.configure(
             font=font.Font(
-                family=MenuAnimation.FONT["title"],
-                size=22
+                family=Config.FONT["title"],
+                size=Config.SIZE["x-large"]
             ),
-            background="#333E47",
-            foreground=MenuAnimation.COLOR["foreground"]
+            background=Config.COLOR["title-bg"],
+            foreground=Config.COLOR["title-fg"]
         )
-        title.grid(sticky=W + E, pady=10)
+        title.grid(sticky='we', pady=10)
 
     def build_speed_scale(self):
         """
@@ -67,30 +56,30 @@ class MenuAnimation(Frame):
         speed_label = Label(self, text="Vitesse")
         speed_label.configure(
             font=font.Font(
-                family=MenuAnimation.FONT["main"],
-                size=MenuAnimation.SIZE["large"]
+                family=Config.FONT["main"],
+                size=Config.SIZE["large"]
             ),
-            background=MenuAnimation.COLOR["background"],
-            foreground=MenuAnimation.COLOR["foreground"]
+            background=Config.COLOR["main-bg"],
+            foreground=Config.COLOR["main-fg"]
         )
-        speed_label.grid(sticky=W, padx=5)
+        speed_label.grid(sticky='w', padx=10)
 
         scale = Scale(self, from_=-1, to=1, resolution=0.1, tickinterval=0.5, command=self.on_move_scale)
         scale.configure(
             length=MenuAnimation.WIDTH - 10,
             orient='horizontal',
             font=font.Font(
-                family=MenuAnimation.FONT["main"],
-                size=MenuAnimation.SIZE["medium"]
+                family=Config.FONT["main"],
+                size=Config.SIZE["small"]
             ),
-            background=MenuAnimation.COLOR["background"],
-            foreground=MenuAnimation.COLOR["foreground"],
-            activebackground=MenuAnimation.COLOR["background"],
-            troughcolor="#f1f1f1",
-            highlightthickness=0,
+            background=Config.COLOR["main-bg"],
+            foreground=Config.COLOR["main-fg"],
+            activebackground=Config.COLOR["main-bg"],
+            troughcolor=Config.COLOR["main-fg"],
+            highlightthickness=0
         )
         scale.set(1)
-        scale.grid()
+        scale.grid(padx=10)
 
         return scale
 
@@ -103,15 +92,15 @@ class MenuAnimation(Frame):
         btn = Button(self, text="Pause", command=self.on_click_play_pause)
         btn.configure(
             font=font.Font(
-                family=MenuAnimation.FONT["main"],
-                size=MenuAnimation.SIZE["medium"]
+                family=Config.FONT["main"],
+                size=Config.SIZE["medium"]
             ),
-            background=MenuAnimation.COLOR["foreground"],
-            foreground=MenuAnimation.COLOR["background"],
+            background=Config.COLOR["btn-bg"],
+            foreground=Config.COLOR["btn-fg"],
             cursor="hand2",
             state=DISABLED
         )
-        btn.grid(sticky=W + E, padx=20, pady=20)
+        btn.grid(sticky='we', padx=10, pady=(20, 10))
 
         return btn
 
@@ -124,15 +113,15 @@ class MenuAnimation(Frame):
         btn = Button(self, text="Stop", command=self.on_click_stop)
         btn.configure(
             font=font.Font(
-                family=MenuAnimation.FONT["main"],
-                size=MenuAnimation.SIZE["medium"]
+                family=Config.FONT["main"],
+                size=Config.SIZE["medium"]
             ),
-            background=MenuAnimation.COLOR["foreground"],
-            foreground=MenuAnimation.COLOR["background"],
+            background=Config.COLOR["btn-bg"],
+            foreground=Config.COLOR["btn-fg"],
             cursor="hand2",
             state=DISABLED
         )
-        btn.grid(sticky=W + E, padx=20, pady=0)
+        btn.grid(sticky='we', padx=10)
 
         return btn
 
@@ -152,18 +141,29 @@ class MenuAnimation(Frame):
         """
         self.master.m_menu.m_history_interpreter.toggle_pause()
 
-        if self.m_play_button.cget("text") == "Play":
-            self.m_play_button.configure(text="Pause")
-        else:
-            self.m_play_button.configure(text="Play")
+        self.m_play_button.configure(text={
+            "Play": "Pause",
+            "Pause": "Play"
+        }[self.m_play_button.cget("text")])
 
     def on_click_stop(self):
-        self.master.m_menu.m_history_interpreter.stop()
+        """
+        Arrete l'animation en cours
+        """
         self.m_play_button.configure(text="Pause")
         self.set_buttons_state(DISABLED)
+
+        self.master.m_menu.m_history_interpreter.stop()
         self.master.m_menu.set_buttons_state(ACTIVE)
         self.master.m_grid.enable_event()
 
     def set_buttons_state(self, state):
+        """
+        Change l'etat des boutons
+
+        :param state: Etat des boutons
+
+        :type state: ACTIVE, DISABLED
+        """
         self.m_play_button.configure(state=state)
         self.m_stop_button.configure(state=state)

@@ -1,4 +1,3 @@
-import gui.cell as gcc
 import gui.cell_type as gct
 
 
@@ -37,10 +36,10 @@ class GridEventManager:
         :param string color : Couleur de la previsualisation
         """
         self.m_preview_id = self.m_grid.create_rectangle(
-            gcc.Cell.WIDTH * x,
-            gcc.Cell.WIDTH * y,
-            gcc.Cell.WIDTH * (x + 1),
-            gcc.Cell.WIDTH * (y + 1),
+            self.m_grid.m_cell_size * x,
+            self.m_grid.m_cell_size * y,
+            self.m_grid.m_cell_size * (x + 1),
+            self.m_grid.m_cell_size * (y + 1),
             fill=color
         )
 
@@ -71,7 +70,7 @@ class GridEventManager:
         if self.is_out_of_bound(event):
             return
 
-        x, y = event.x // gcc.Cell.WIDTH, event.y // gcc.Cell.WIDTH
+        x, y = event.x // self.m_grid.m_cell_size, event.y // self.m_grid.m_cell_size
 
         self.m_editor_type = {
             gct.CellType.START["id"]: GridEventManager.MOVE_START,
@@ -99,7 +98,7 @@ class GridEventManager:
         if self.is_out_of_bound(event):
             return
 
-        x, y = event.x // gcc.Cell.WIDTH, event.y // gcc.Cell.WIDTH
+        x, y = event.x // self.m_grid.m_cell_size, event.y // self.m_grid.m_cell_size
         cell_type = self.m_grid.m_cells[y][x].m_type
 
         if self.m_editor_type == GridEventManager.MOVE_START:
@@ -133,13 +132,13 @@ class GridEventManager:
         event.x = sorted((0, event.x, event.widget.winfo_width() - 2))[1]
         event.y = sorted((0, event.y, event.widget.winfo_height() - 2))[1]
 
-        x, y = event.x // gcc.Cell.WIDTH, event.y // gcc.Cell.WIDTH
+        x, y = event.x // self.m_grid.m_cell_size, event.y // self.m_grid.m_cell_size
         cell_type_id = self.m_grid.m_cells[y][x].m_type["id"]
 
         if self.m_editor_type in [GridEventManager.MOVE_START, GridEventManager.MOVE_END]:
             if self.m_preview_id is not None:
                 preview_bbox = self.m_grid.coords(self.m_preview_id)
-                x, y = int(preview_bbox[0] // gcc.Cell.WIDTH), int(preview_bbox[1] // gcc.Cell.WIDTH)
+                x, y = int(preview_bbox[0] // self.m_grid.m_cell_size), int(preview_bbox[1] // self.m_grid.m_cell_size)
 
             self.m_grid.m_cells[y][x].set_type({
                GridEventManager.MOVE_START: gct.CellType.START,

@@ -1,49 +1,54 @@
-from tkinter import Tk, Y, RIGHT, LEFT
+from tkinter import Tk
 
 import gui.grid as gg
 import gui.menu as gms
 import gui.menu_animation as gma
 
+from gui.config import Config
+from gui.informations_displayer import InformationsDisplayer
+
 
 class Gui(Tk):
-
-    GRID_MARGIN = 5
-
-    WIDTH = gg.Grid.WIDTH + gms.Menu.WIDTH + 2 * GRID_MARGIN + gma.MenuAnimation.WIDTH
-    HEIGHT = max(gg.Grid.HEIGHT, gms.Menu.MIN_HEIGHT, gma.MenuAnimation.MIN_HEIGHT) + 2 * GRID_MARGIN
 
     def __init__(self):
         """
         Constructeur
         """
         super().__init__()
-        self.setup_tk()
+        self.config_tk()
 
+        self.m_menu_animation = gma.MenuAnimation(self)
+        self.m_informations_displayer = InformationsDisplayer(self)
         self.m_grid = gg.Grid(self)
         self.m_menu = gms.Menu(self)
-        self.m_menu_animation = gma.MenuAnimation(self)
 
         self.config_template()
 
-    def setup_tk(self):
+    def config_tk(self):
         """
         Initialise la fenetre principale
         """
         self.title("Python - Pathfinding algorithms")
         self.geometry("%dx%d+%d+%d" % (
-            Gui.WIDTH,
-            Gui.HEIGHT,
-            (self.winfo_screenwidth() - Gui.WIDTH) // 2,
-            (self.winfo_screenheight() - Gui.HEIGHT) // 2)
+            Config.WIDTH,
+            Config.HEIGHT,
+            (self.winfo_screenwidth() - Config.WIDTH) // 2,
+            (self.winfo_screenheight() - Config.HEIGHT) // 2)
         )
-        self.update()
-        self.minsize(self.winfo_width(), self.winfo_height())
         self.resizable(False, False)
 
     def config_template(self):
-        self.m_menu_animation.pack(fill=Y, side=LEFT)
-        self.m_menu.pack(fill=Y, side=RIGHT)
-        self.m_grid.pack(expand=True)
+        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=1)
+        self.rowconfigure(3, weight=1)
+        self.columnconfigure(1, minsize=gma.MenuAnimation.WIDTH)
+        self.columnconfigure(2, weight=1)
+        self.columnconfigure(3, minsize=gms.Menu.WIDTH)
+
+        self.m_menu_animation.grid(column=1, row=1, rowspan=2, sticky='nwse')
+        self.m_informations_displayer.grid(column=1, row=3, sticky='nwse')
+        self.m_menu.grid(column=3, row=1, rowspan=3, sticky='nwse')
+        self.m_grid.grid(column=2, row=1, rowspan=3, sticky='nwse', padx=10, pady=10)
 
     def show(self):
         """

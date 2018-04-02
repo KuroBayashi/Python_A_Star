@@ -3,9 +3,7 @@ from algorithms.a_star.node import Node
 
 class Cell(Node):
 
-    WIDTH = 20
-
-    def __init__(self, canvas, x, y, cell_type):
+    def __init__(self, canvas, x, y, cell_type, size):
         """
         Constructeur
 
@@ -13,20 +11,22 @@ class Cell(Node):
         :param x: Position horizontale du noeud
         :param y: Position verticale du noeud
         :param cell_type: Type de cellule
+        :param size: Taille de la cellule
 
         :type canvas: Canvas
         :type x: int
         :type y: int
         :type cell_type: CellType
+        :type size: int
         """
         super().__init__(x, y, cell_type["traversable"])
         self.m_canvas = canvas
         self.m_type = cell_type
         self.m_shape = canvas.create_rectangle(
-            Cell.WIDTH * x,
-            Cell.WIDTH * y,
-            Cell.WIDTH * (x + 1),
-            Cell.WIDTH * (y + 1),
+            size * x,
+            size * y,
+            size * (x + 1),
+            size * (y + 1),
             fill=cell_type["color"]
         )
 

@@ -1,22 +1,20 @@
-from tkinter import Frame, Label, E, W, font, Radiobutton, IntVar, Checkbutton, Button, DISABLED, ACTIVE
+from tkinter import Frame, Label, font, Radiobutton, IntVar, Checkbutton, Button, DISABLED, ACTIVE
 
 from algorithms.a_star.a_star import AStar
 from algorithms.a_star.exception_path_not_found import ExceptionPathNotFound
 from algorithms.a_star.heuristic import Heuristic
+
 from gui.cell_type import CellType
+from gui.config import Config
 from gui.history_interpreter import HistoryInterpreter
 from gui.menu_event_manager import MenuEventManager
+
 from history.history import History
 
 
 class Menu(Frame):
 
     WIDTH = 250
-    MIN_HEIGHT = 500
-
-    COLOR = {"background": "#29323a", "foreground": "#f1f1f1", "hover": "#dbd9d9", "error": "#f24d4d"}
-    FONT = {"title": "Lobster", "main": "Open Sans"}
-    SIZE = {"label": 12, "list": 10}
 
     ALGORITHMS = ["A*", "Dijkstra"]
     HEURISTICS = ["Manhattan", "Chebyshev", "Euclidien", "Octile"]
@@ -31,7 +29,7 @@ class Menu(Frame):
         super().__init__(root)
         self.setup_frame()
 
-        self.m_title = self.build_title()
+        self.build_title()
         self.m_algorithms_list = self.build_algorithms_list()
         self.m_heuristics_list = self.build_heuristics_list()
         self.m_options_list = self.build_options_list()
@@ -48,48 +46,64 @@ class Menu(Frame):
         """
         Initialise la fenetre du menu
         """
-        self.configure(width=Menu.WIDTH)
-        self.configure(background=Menu.COLOR["background"])
-        self.pack_propagate(0)
-        self.grid_columnconfigure(0, weight=1)
+        self.configure(
+            width=Menu.WIDTH,
+            background=Config.COLOR["main-bg"]
+        )
         self.grid_propagate(0)
+        self.columnconfigure(0, weight=1)
 
     def build_title(self):
         """
         Construit le titre du menu
-
-        :return Label : Identifiant unique du titre
         """
         # Label
         title = Label(self, text="Resolution")
-        title.configure(font=font.Font(family=Menu.FONT["title"], size=22))
-        title.configure(background="#333E47", foreground=Menu.COLOR["foreground"])
-        title.grid(sticky=W+E, pady=10)
-
-        return title
+        title.configure(
+            font=font.Font(
+                family=Config.FONT["title"],
+                size=22
+            ),
+            background=Config.COLOR["title-bg"],
+            foreground=Config.COLOR["title-fg"]
+        )
+        title.grid(sticky='we', pady=10)
 
     def build_algorithms_list(self):
         """
         Construit la liste des algorithmes disponibles
 
-        :return (Label, IntVar) : Tuple contenant l'identifiant unique du Label, et de la liste des boutons Radio
+        :return: IntVar - Identifiant unique de la liste des algorithmes
         """
         # Label
         algo_label = Label(self, text="Choix de l'algorithme")
-        algo_label.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"]))
-        algo_label.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
-        algo_label.grid(sticky=W, padx=5)
+        algo_label.configure(
+            font=font.Font(
+                family=Config.FONT["main"],
+                size=Config.SIZE["large"]
+            ),
+            background=Config.COLOR["main-bg"],
+            foreground=Config.COLOR["main-fg"]
+        )
+        algo_label.grid(sticky='w', padx=10)
 
         # Radio buttons
         x = IntVar(value=1)
 
         for index, text in enumerate(Menu.ALGORITHMS):
             rdo = Radiobutton(self, text=text, variable=x, value=index+1, tristatevalue=0)
-            rdo.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["list"]))
-            rdo.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
-            rdo.configure(activebackground=Menu.COLOR["background"], activeforeground=Menu.COLOR["foreground"])
-            rdo.configure(selectcolor=Menu.COLOR["background"])
-            rdo.grid(sticky=W, padx=20)
+            rdo.configure(
+                font=font.Font(
+                    family=Config.FONT["main"],
+                    size=Config.SIZE["medium"]
+                ),
+                background=Config.COLOR["main-bg"],
+                foreground=Config.COLOR["main-fg"],
+                activebackground=Config.COLOR["main-bg"],
+                activeforeground=Config.COLOR["main-fg"],
+                selectcolor=Config.COLOR["main-bg"]
+            )
+            rdo.grid(sticky='w', padx=20)
 
         return x
 
@@ -97,24 +111,37 @@ class Menu(Frame):
         """
         Construit la liste des heuristiques disponibles
 
-        :return (Label, IntVar) : Tuple contenant l'identifiant unique du Label, et de la liste des boutons Radio
+        :return: IntVar - Identifiant de la liste des boutons
         """
         # Label
         heuristic_label = Label(self, text="Choix de l'heuristique")
-        heuristic_label.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"]))
-        heuristic_label.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
-        heuristic_label.grid(sticky=W, padx=5)
+        heuristic_label.configure(
+            font=font.Font(
+                family=Config.FONT["main"],
+                size=Config.SIZE["large"]
+            ),
+            background=Config.COLOR["main-bg"],
+            foreground=Config.COLOR["main-fg"]
+        )
+        heuristic_label.grid(sticky='w', padx=10)
 
         # Radio buttons
         x = IntVar(value=1)
 
         for index, text in enumerate(Menu.HEURISTICS):
             rdo = Radiobutton(self, text=text, variable=x, value=index+1, tristatevalue=0)
-            rdo.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["list"]))
-            rdo.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
-            rdo.configure(activebackground=Menu.COLOR["background"], activeforeground=Menu.COLOR["foreground"])
-            rdo.configure(selectcolor=Menu.COLOR["background"])
-            rdo.grid(sticky=W, padx=20)
+            rdo.configure(
+                font=font.Font(
+                    family=Config.FONT["main"],
+                    size=Config.SIZE["medium"]
+                ),
+                background=Config.COLOR["main-bg"],
+                foreground=Config.COLOR["main-fg"],
+                activebackground=Config.COLOR["main-bg"],
+                activeforeground=Config.COLOR["main-fg"],
+                selectcolor=Config.COLOR["main-bg"]
+            )
+            rdo.grid(sticky='w', padx=20)
 
         return x
 
@@ -122,13 +149,19 @@ class Menu(Frame):
         """
         Construit la liste des options disponibles
 
-        :return (Label, List(IntVar)) : Tuple contenant l'identifiant unique du Label, et une liste de ceux des options
+        :return: list(IntVar) - Liste contenant les identifiants des options
         """
         # Label
         opt_label = Label(self, text="Options")
-        opt_label.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"]))
-        opt_label.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
-        opt_label.grid(sticky=W, padx=5)
+        opt_label.configure(
+            font=font.Font(
+                family=Config.FONT["main"],
+                size=Config.SIZE["large"]
+            ),
+            background=Config.COLOR["main-bg"],
+            foreground=Config.COLOR["main-fg"]
+        )
+        opt_label.grid(sticky='w', padx=10)
 
         # Checkbox
         opt_list = []
@@ -136,11 +169,18 @@ class Menu(Frame):
         for text in Menu.OPTIONS:
             x = IntVar()
             ckb = Checkbutton(self, text=text, variable=x, tristatevalue=0)
-            ckb.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["list"]))
-            ckb.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["foreground"])
-            ckb.configure(activebackground=Menu.COLOR["background"], activeforeground=Menu.COLOR["foreground"])
-            ckb.configure(selectcolor=Menu.COLOR["background"])
-            ckb.grid(sticky=W, padx=20)
+            ckb.configure(
+                font=font.Font(
+                    family=Config.FONT["main"],
+                    size=Config.SIZE["medium"]
+                ),
+                background=Config.COLOR["main-bg"],
+                foreground=Config.COLOR["main-fg"],
+                activebackground=Config.COLOR["main-bg"],
+                activeforeground=Config.COLOR["main-fg"],
+                selectcolor=Config.COLOR["main-bg"]
+            )
+            ckb.grid(sticky='w', padx=20)
             opt_list.append(x)
 
         return opt_list
@@ -149,12 +189,18 @@ class Menu(Frame):
         """
         Construit le Label pour afficher un message retour a l'utilisateur
 
-        :return Label : Identifiant unique du Label
+        :return: Label - Identifiant unique du Label
         """
         message = Label(self, text="")
-        message.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"]))
-        message.configure(background=Menu.COLOR["background"], foreground=Menu.COLOR["error"])
-        message.grid(sticky=W+E, padx=5, pady=10)
+        message.configure(
+            font=font.Font(
+                family=Config.FONT["main"],
+                size=Config.SIZE["large"]
+            ),
+            background=Config.COLOR["main-bg"],
+            foreground=Config.COLOR["error"]
+        )
+        message.grid(sticky='we', padx=10, pady=10)
 
         return message
 
@@ -162,13 +208,20 @@ class Menu(Frame):
         """
         Construit le bouton pour lancer la resolution
 
-        :return Button : Identifiant unique du bouton
+        :return: Button - Identifiant unique du bouton
         """
         btn = Button(self, text="START", command=self.on_click_start)
-        btn.configure(font=font.Font(family=Menu.FONT["main"], size=Menu.SIZE["label"], weight="bold"))
-        btn.configure(background=Menu.COLOR["foreground"], foreground=Menu.COLOR["background"])
-        btn.configure(cursor="hand2")
-        btn.grid(sticky=W+E, padx=20, pady=10)
+        btn.configure(
+            font=font.Font(
+                family=Config.FONT["main"],
+                size=Config.SIZE["large"],
+                weight="bold"
+            ),
+            background=Config.COLOR["btn-bg"],
+            foreground=Config.COLOR["btn-fg"],
+            cursor="hand2"
+        )
+        btn.grid(sticky='we', padx=10, pady=10)
 
         return btn
 
@@ -176,13 +229,20 @@ class Menu(Frame):
         """
         Construit le bouton pour reinitialiser la grille
 
-        :return Button : Identifiant unique du bouton
+        :return: Button - Identifiant unique du bouton
         """
         btn = Button(self, text="Clear Wall", command=self.on_click_clear_wall)
-        btn.configure(font=font.Font(family=Menu.FONT["main"], size=8))
-        btn.configure(background=Menu.COLOR["foreground"], foreground=Menu.COLOR["background"])
-        btn.configure(cursor="hand2")
-        btn.grid(sticky=W+E, padx=20)
+        btn.configure(
+            font=font.Font(
+                family=Config.FONT["main"],
+                size=Config.SIZE["medium"]
+            ),
+            background=Config.COLOR["btn-bg"],
+            foreground=Config.COLOR["btn-fg"],
+            cursor="hand2"
+        )
+        btn.grid(sticky='we', padx=10)
+
         return btn
 
     def on_click_start(self):
@@ -190,12 +250,11 @@ class Menu(Frame):
         Lance la resolution et la previsualisation
         """
         # Button state
-        self.m_start_button.configure(state=DISABLED)
-        self.m_reset_button.configure(state=DISABLED)
-        self.master.m_menu_animation.m_play_button.configure(state=ACTIVE)
-        self.master.m_menu_animation.m_stop_button.configure(state=ACTIVE)
-        self.master.m_grid.unbind("<ButtonPress-1>")
-        self.master.m_grid.unbind("<ButtonRelease-1>")
+        self.set_buttons_state(DISABLED)
+        self.master.m_menu_animation.set_buttons_state(ACTIVE)
+        self.master.m_grid.disable_event()
+
+        # Animation speed
         if self.master.m_menu_animation.m_scale.get() <= 0:
             self.master.m_menu_animation.m_scale.set(1)
 
@@ -238,14 +297,12 @@ class Menu(Frame):
         except ExceptionPathNotFound as e:
             self.m_message.configure(text=e.m_message)
             self.set_buttons_state(ACTIVE)
-            self.master.m_menu_animation.m_play_button.configure(state=DISABLED)
-            self.master.m_menu_animation.m_stop_button.configure(state=DISABLED)
-            self.master.m_grid.bind("<ButtonPress-1>", self.master.m_grid.m_event_manager.on_mouse_down)
-            self.master.m_grid.bind("<ButtonRelease-1>", self.master.m_grid.m_event_manager.on_mouse_up)
+            self.master.m_menu_animation.set_buttons_state(DISABLED)
+            self.master.m_grid.enable_event()
 
     def on_click_clear_path(self):
         """
-        Supprime le rendu de la precedente resolution,
+        Supprime le rendu de la precedente resolution
         """
         self.master.m_grid.clear()
 
@@ -257,5 +314,15 @@ class Menu(Frame):
         self.master.m_grid.reset()
 
     def set_buttons_state(self, state):
+        """
+        Change l'etat des boutons
+
+        :param state: Etat des boutons
+
+        :type state: ACTIVE, DISABLED
+        """
         self.m_start_button.configure(state=state)
         self.m_reset_button.configure(state=state)
+
+    def stop(self):
+        self.m_history_interpreter.stop()

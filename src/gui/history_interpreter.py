@@ -1,4 +1,3 @@
-from gui.cell import Cell
 from history.action_type import ActionType
 
 
@@ -8,8 +7,11 @@ class HistoryInterpreter:
         """
         Constructeur
 
-        :param History history : Historique des actions
-        :param Canvas canvas : Zone de dessin
+        :param history : Historique des actions
+        :param canvas : Zone de dessin
+
+        :type history: History
+        :type canvas: Canvas
         """
         self.m_current = None
         self.m_history = history
@@ -49,6 +51,10 @@ class HistoryInterpreter:
     def run(self, reset=False):
         """
         Demarre l'animation du deroulement des actions de l'historique
+
+        :param reset: Remise des valeurs par defaut
+
+        :type reset: bool
         """
         if reset:
             self.m_pause = False
@@ -76,10 +82,10 @@ class HistoryInterpreter:
         """
         x, y = self.m_history[self.m_current_index].m_element.m_x, self.m_history[self.m_current_index].m_element.m_y
         current = self.m_canvas.create_rectangle(
-            Cell.WIDTH * x,
-            Cell.WIDTH * y,
-            Cell.WIDTH * (x + 1),
-            Cell.WIDTH * (y + 1),
+            self.m_canvas.m_cell_size * x,
+            self.m_canvas.m_cell_size * y,
+            self.m_canvas.m_cell_size * (x + 1),
+            self.m_canvas.m_cell_size * (y + 1),
             fill=self.m_history[self.m_current_index].m_type["color"],
             tags="history"
         )
@@ -95,9 +101,9 @@ class HistoryInterpreter:
         """
         Change le texte des informations en fonction de l'action en cours de rendu
         """
-        self.m_canvas.master.m_menu_animation.m_informations_displayer.set_operations(
+        self.m_canvas.master.m_informations_displayer.set_operations(
             self.m_current_index
         )
-        self.m_canvas.master.m_menu_animation.m_informations_displayer.set_time(
+        self.m_canvas.master.m_informations_displayer.set_time(
             self.m_history[self.m_current_index].m_passed_time
         )
