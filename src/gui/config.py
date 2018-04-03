@@ -2,6 +2,11 @@ class Config:
     WIDTH = 960
     HEIGHT = 540
 
+    LEFT_MENU_WIDTH = 250
+    RIGHT_MENU_WIDTH = 250
+
+    CELL_SIZE = 10
+
     COLOR = {
         "main-bg": "#29323a",
         "main-fg": "#f1f1f1",
@@ -22,5 +27,3 @@ class Config:
         "medium": 10,
         "small": 8
     }
-
-    CELL_SIZE = 20

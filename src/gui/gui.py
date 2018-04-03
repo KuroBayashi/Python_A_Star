@@ -41,9 +41,9 @@ class Gui(Tk):
         self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=1)
         self.rowconfigure(3, weight=1)
-        self.columnconfigure(1, minsize=gma.MenuAnimation.WIDTH)
+        self.columnconfigure(1, minsize=Config.LEFT_MENU_WIDTH)
         self.columnconfigure(2, weight=1)
-        self.columnconfigure(3, minsize=gms.Menu.WIDTH)
+        self.columnconfigure(3, minsize=Config.RIGHT_MENU_WIDTH)
 
         self.m_menu_animation.grid(column=1, row=1, rowspan=2, sticky='nwse')
         self.m_informations_displayer.grid(column=1, row=3, sticky='nwse')

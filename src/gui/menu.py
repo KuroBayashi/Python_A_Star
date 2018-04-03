@@ -14,8 +14,6 @@ from history.history import History
 
 class Menu(Frame):
 
-    WIDTH = 250
-
     ALGORITHMS = ["A*", "Dijkstra"]
     HEURISTICS = ["Manhattan", "Chebyshev", "Euclidien", "Octile"]
     OPTIONS = ["Autoriser les diagonales"]
@@ -47,7 +45,6 @@ class Menu(Frame):
         Initialise la fenetre du menu
         """
         self.configure(
-            width=Menu.WIDTH,
             background=Config.COLOR["main-bg"]
         )
         self.grid_propagate(0)

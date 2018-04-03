@@ -5,8 +5,6 @@ from gui.config import Config
 
 class InformationsDisplayer(Frame):
 
-    WIDTH = 250
-
     def __init__(self, root):
         """
         Constructeur

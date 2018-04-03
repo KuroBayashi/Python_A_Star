@@ -5,8 +5,6 @@ from gui.config import Config
 
 class MenuAnimation(Frame):
 
-    WIDTH = 250
-
     def __init__(self, root):
         """
         Constructeur
@@ -27,8 +25,9 @@ class MenuAnimation(Frame):
         """
         Initialise la fenetre du menu
         """
-        self.configure(width=MenuAnimation.WIDTH)
-        self.configure(background=Config.COLOR["main-bg"])
+        self.configure(
+            background=Config.COLOR["main-bg"]
+        )
         self.grid_propagate(0)
         self.columnconfigure(0, weight=1)
 
@@ -66,7 +65,7 @@ class MenuAnimation(Frame):
 
         scale = Scale(self, from_=-1, to=1, resolution=0.1, tickinterval=0.5, command=self.on_move_scale)
         scale.configure(
-            length=MenuAnimation.WIDTH - 10,
+            length=Config.LEFT_MENU_WIDTH - 10,
             orient='horizontal',
             font=font.Font(
                 family=Config.FONT["main"],
