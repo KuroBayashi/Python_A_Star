@@ -35,7 +35,8 @@ class Gui(Tk):
             (self.winfo_screenwidth() - Config.WIDTH) // 2,
             (self.winfo_screenheight() - Config.HEIGHT) // 2)
         )
-        self.resizable(False, False)
+        self.minsize(Config.WIDTH, Config.HEIGHT)
+        # self.resizable(False, False)
 
     def config_template(self):
         self.rowconfigure(1, weight=1)

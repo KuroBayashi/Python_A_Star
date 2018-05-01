@@ -38,7 +38,7 @@ class AStar:
         :type start: Node
         :type end: Node
 
-        :return: list(Node)
+        :return: list(Node) - Liste ordonee des noeuds du chemin obtenu
 
         :except ExceptionPathNotFound: Erreur levee en cas de chemin impossible
         """
@@ -89,7 +89,7 @@ class AStar:
 
         :type node: None
 
-        :return: list(Node)
+        :return: list(Node) - Liste des noeuds atteignables
         """
         x, y = node.m_x, node.m_y
 
@@ -115,7 +115,7 @@ class AStar:
 
         :type node: Node
 
-        :return: list(Node)
+        :return: list(Node) - Liste ordonee des noeuds du chemin obtenu
         """
         path = []
 
@@ -139,7 +139,7 @@ class AStar:
         :type a: Node
         :type b: Node
 
-        :return: int
+        :return: int - Distance entre les 2 noeuds
         """
         if a.m_x == b.m_x or a.m_y == b.m_y:
             return 1

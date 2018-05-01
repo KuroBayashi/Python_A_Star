@@ -33,11 +33,17 @@ class Grid(Canvas):
         Initialise le canvas
         """
         self.configure(
-            background=Config.COLOR["error"],
             highlightthickness=0
         )
 
     def draw_grid(self, event):
+        """
+        Calcul le nombre de colonne et de ligne, puis dessine la grille
+
+        :param event: Evenement genere
+
+        :type event: Event
+        """
         self.m_rows = (event.height - 1) // self.m_cell_size
         self.m_cols = (event.width - 1) // self.m_cell_size
 
@@ -72,7 +78,7 @@ class Grid(Canvas):
 
     def clear(self):
         """
-        Supprime le rendu de la resolution
+        Supprime le rendu de la resolution et remise a zero des parametres
         """
         for y in range(len(self.master.m_grid.m_cells)):
             for x in range(len(self.master.m_grid.m_cells[0])):
@@ -90,7 +96,6 @@ class Grid(Canvas):
         for y in range(len(self.master.m_grid.m_cells)):
             for x in range(len(self.master.m_grid.m_cells[0])):
                 self.m_cells[y][x].reset()
-
                 if self.m_cells[y][x].m_type == gct.CellType.WALL:
                     self.m_cells[y][x].set_type(gct.CellType.EMPTY)
 

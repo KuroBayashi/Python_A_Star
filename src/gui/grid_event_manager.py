@@ -83,8 +83,8 @@ class GridEventManager:
             self.m_grid.m_cells[y][x].set_type(gct.CellType.EMPTY)
 
             self.draw_preview(x, y, {
-                GridEventManager.MOVE_START : gct.CellType.START["color"],
-                GridEventManager.MOVE_END : gct.CellType.END["color"]
+                GridEventManager.MOVE_START: gct.CellType.START["color"],
+                GridEventManager.MOVE_END: gct.CellType.END["color"]
             }[self.m_editor_type])
 
         self.m_grid.bind("<B1-Motion>", self.on_mouse_move)
@@ -143,7 +143,7 @@ class GridEventManager:
             self.m_grid.m_cells[y][x].set_type({
                GridEventManager.MOVE_START: gct.CellType.START,
                GridEventManager.MOVE_END: gct.CellType.END
-           }[self.m_editor_type])
+            }[self.m_editor_type])
 
             self.delete_preview()
         elif cell_type_id not in [gct.CellType.START["id"], gct.CellType.END["id"]]:

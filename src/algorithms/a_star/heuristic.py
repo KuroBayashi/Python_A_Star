@@ -27,8 +27,8 @@ class Heuristic:
 
     @staticmethod
     def euclidean(node, target):
-        dx = abs(node.m_x - target.m_x)
-        dy = abs(node.m_y - target.m_y)
+        dx = node.m_x - target.m_x
+        dy = node.m_y - target.m_y
 
         return sqrt(dx * dx + dy * dy)
 

@@ -20,7 +20,7 @@ class HistoryInterpreter:
         self.m_history_shapes = []
 
         self.m_animation_speed = 1
-        self.m_pause = False
+        self.m_btn_pause = False
         self.m_scl_pause = False
         self.m_stop = False
 
@@ -42,7 +42,7 @@ class HistoryInterpreter:
         self.m_animation_speed = self.calculate_animation_speed(speed)
 
     def toggle_pause(self):
-        self.m_pause = not self.m_pause
+        self.m_btn_pause = not self.m_btn_pause
 
     def stop(self):
         self.m_stop = True
@@ -57,7 +57,7 @@ class HistoryInterpreter:
         :type reset: bool
         """
         if reset:
-            self.m_pause = False
+            self.m_btn_pause = False
             self.m_current_index = 0
             self.m_history_shapes.clear()
 
@@ -65,7 +65,7 @@ class HistoryInterpreter:
             self.m_stop = False
             return
 
-        if not self.m_pause and not self.m_scl_pause:
+        if not self.m_btn_pause and not self.m_scl_pause:
             if 0 <= self.m_current_index < len(self.m_history) and self.m_animation_speed > 0:
                 self.render()
                 self.m_current_index += 1

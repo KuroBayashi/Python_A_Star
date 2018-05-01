@@ -1,0 +1,28 @@
+\begin{thebibliography}{Lun05}
+
+\bibitem[Fou18]{Python}
+Python~Software Foundation.
+\newblock Python 3.6.5 documentation.
+\newblock https://docs.python.org/3/, 2001-2018.
+
+\bibitem[Lun05]{Tkinter}
+Fredrik Lundh.
+\newblock An introduction to tkinter.
+\newblock http://effbot.org/tkinterbook/, 2005.
+
+\bibitem[Pat18]{A*}
+Amit Patel.
+\newblock Amit's a* pages.
+\newblock http://theory.stanford.edu/~amitp/GameProgramming/, 1997-2018.
+
+\bibitem[Wik]{Wiki}
+Wikipedia.
+\newblock A* search algorithm.
+\newblock https://en.wikipedia.org/wiki/A*_search_algorithm/.
+
+\bibitem[Xu18]{PathFinding}
+Xueqiao~(Joe) Xu.
+\newblock Pathfinding.
+\newblock https://qiao.github.io/PathFinding.js/visual/, 2011-2018.
+
+\end{thebibliography}

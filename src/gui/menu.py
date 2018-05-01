@@ -22,7 +22,9 @@ class Menu(Frame):
         """
         Constructeur
 
-        :param Tk root : Fenetre racine
+        :param root : Fenetre racine
+
+        :type root: Tk
         """
         super().__init__(root)
         self.setup_frame()
@@ -246,7 +248,7 @@ class Menu(Frame):
         """
         Lance la resolution et la previsualisation
         """
-        # Button state
+        # Buttons state
         self.set_buttons_state(DISABLED)
         self.master.m_menu_animation.set_buttons_state(ACTIVE)
         self.master.m_grid.disable_event()
