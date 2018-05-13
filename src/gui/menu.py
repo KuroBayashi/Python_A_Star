@@ -22,7 +22,7 @@ class Menu(Frame):
         """
         Constructeur
 
-        :param root : Fenetre racine
+        :param root: Fenetre racine
 
         :type root: Tk
         """
@@ -230,7 +230,7 @@ class Menu(Frame):
 
         :return: Button - Identifiant unique du bouton
         """
-        btn = Button(self, text="Clear Wall", command=self.on_click_clear_wall)
+        btn = Button(self, text="Supprimer les obstacles", command=self.on_click_clear_wall)
         btn.configure(
             font=font.Font(
                 family=Config.FONT["main"],

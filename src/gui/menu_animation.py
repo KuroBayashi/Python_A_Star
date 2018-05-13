@@ -9,7 +9,7 @@ class MenuAnimation(Frame):
         """
         Constructeur
 
-        :param root : Fenetre racine
+        :param root: Fenetre racine
 
         :type root: Tk
         """

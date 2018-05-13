@@ -25,6 +25,15 @@ class HistoryInterpreter:
         self.m_stop = False
 
     def calculate_animation_speed(self, speed):
+        """
+        Calcul la vitesse d'animation en fonction de la vitesse choisi
+
+        :param speed: Vitesse choisi
+
+        :type speed: string / int
+
+        :return: int - Vitesse d'animation
+        """
         speed = float(speed)
 
         self.m_scl_pause = True if speed == 0 else False
@@ -42,9 +51,15 @@ class HistoryInterpreter:
         self.m_animation_speed = self.calculate_animation_speed(speed)
 
     def toggle_pause(self):
+        """
+        Active / Desactive la pause de l'animation
+        """
         self.m_btn_pause = not self.m_btn_pause
 
     def stop(self):
+        """
+        Arrete l'animation en cours et supprime son rendu graphique
+        """
         self.m_stop = True
         self.m_canvas.clear()
 

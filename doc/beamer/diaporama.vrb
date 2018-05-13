@@ -1,0 +1,10 @@
+Historique des actions importantes.
+			\begin{itemize}
+				\item[•] Historique : Liste contenant les actions
+				\item[•] Action : Structure contenant les informations que l'on souhaite (temps, type, ...)
+			\end{itemize}
+			\vspace{4mm}
+			Appel d'une fonction au cours du déroulement de l'algorithme qui ajoute une action à l'historique.	
+			\begin{lstlisting}
+				history.add(action_type, cell, time)
+			\end{lstlisting}

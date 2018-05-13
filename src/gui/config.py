@@ -1,11 +1,11 @@
 class Config:
-    WIDTH = 960 # LEFT_MENU_WIDTH + RIGHT_MENU_WIDTH + ?
-    HEIGHT = 500 # min = 500
+    WIDTH = 960     # LEFT_MENU_WIDTH + RIGHT_MENU_WIDTH + ?
+    HEIGHT = 500    # min = 500
 
     LEFT_MENU_WIDTH = 250
     RIGHT_MENU_WIDTH = 250
 
-    CELL_SIZE = 10
+    CELL_SIZE = 20
 
     COLOR = {
         "main-bg": "#29323a",

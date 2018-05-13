@@ -39,6 +39,9 @@ class Gui(Tk):
         # self.resizable(False, False)
 
     def config_template(self):
+        """
+        Organisation des elements de l'interface
+        """
         self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=1)
         self.rowconfigure(3, weight=1)

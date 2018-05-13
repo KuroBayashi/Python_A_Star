@@ -7,7 +7,7 @@ class MenuEventManager:
         """
         Constructeur
 
-        :param menu : Menu sur lequel on va ecouter des evenements
+        :param menu: Menu sur lequel on va ecouter des evenements
 
         :type menu: Menu
         """

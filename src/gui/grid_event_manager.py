@@ -20,10 +20,16 @@ class GridEventManager:
         self.enable_event()
 
     def enable_event(self):
+        """
+        Active les evenements de la grille
+        """
         self.m_grid.bind("<ButtonPress-1>", self.on_mouse_down)
         self.m_grid.bind("<ButtonRelease-1>", self.on_mouse_up)
 
     def disable_event(self):
+        """
+        Desactive les evenements de la grille
+        """
         self.m_grid.unbind("<ButtonPress-1>")
         self.m_grid.unbind("<ButtonRelease-1>")
 
@@ -54,9 +60,11 @@ class GridEventManager:
         """
         Verifie si le curseur est bien dans le canvas
 
-        :param Event event: Evenement sur lequel la position du curseur doit etre verifie
+        :param event: Evenement sur lequel la position du curseur doit etre verifie
 
-        :return bool : Position valide
+        :type event: Event
+
+        :return: bool - Position valide
         """
         return not (0 < event.x < event.widget.winfo_width() - 1 and
                     0 < event.y < event.widget.winfo_height() - 1)
@@ -65,7 +73,9 @@ class GridEventManager:
         """
         Change le type d'edition
 
-        :param Event event: Evenement en cours
+        :param event: Evenement en cours
+
+        :type event: Event
         """
         if self.is_out_of_bound(event):
             return
@@ -93,7 +103,9 @@ class GridEventManager:
         """
         Ajoute/Supprime des murs ou Deplace les cases de depart/arrivee en fonction du mode d'edition en cours
 
-        :param Event event : Evenement en cours
+        :param event: Evenement en cours
+
+        :type event: Event
         """
         if self.is_out_of_bound(event):
             return
@@ -124,7 +136,9 @@ class GridEventManager:
         """
         Change la derniere cellule active lorsque l'on relache le clic
 
-        :param Event event : Evenement en cours
+        :param event: Evenement en cours
+
+        :type event: Event
         """
         if self.m_editor_type is None:
             return
